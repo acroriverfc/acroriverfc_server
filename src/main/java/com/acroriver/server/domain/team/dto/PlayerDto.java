@@ -1,4 +1,4 @@
-package com.acroriver.server.domain.player.dto;
+package com.acroriver.server.domain.team.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

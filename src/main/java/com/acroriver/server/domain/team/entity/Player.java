@@ -1,11 +1,14 @@
-package com.acroriver.server.domain.player.entity;
+package com.acroriver.server.domain.team.entity;
 
+import com.acroriver.server.domain.team.entity.enums.Position;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -48,8 +51,10 @@ public class Player {
     private int assists;
 
     @Lob
-    @Column(columnDefinition = "CLOB")
     private String description;
+
+    @OneToMany(mappedBy = "player")
+    private List<PlayMatch> playMatches = new ArrayList<>();
 
     public Player(String playerName, Position position, int backNum, int appearances, int goal, int assists) {
         this.playerName = playerName;
@@ -93,11 +98,11 @@ public class Player {
         this.imageUrl = imageUrl;
     }
 
-
     public void changeDescription(String description) {
         if (description == null)
             return;
 
         this.description = description;
     }
+
 }
