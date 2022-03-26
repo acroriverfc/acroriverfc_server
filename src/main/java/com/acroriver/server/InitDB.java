@@ -1,27 +1,47 @@
 package com.acroriver.server;
 
-import com.acroriver.server.domain.team.entity.MatchDay;
-import com.acroriver.server.domain.team.entity.enums.MatchState;
+import com.acroriver.server.team.entity.MatchDay;
+import com.acroriver.server.team.entity.PlayMatch;
+import com.acroriver.server.team.entity.Player;
+import com.acroriver.server.team.entity.enums.MatchState;
+import com.acroriver.server.team.entity.enums.Position;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+
+@RequiredArgsConstructor
 public class InitDB {
 
-    @Component
-    @Transactional
+    private final InitService initService;
+
+
+    public void init() {
+        initService.dbInit1();
+    }
+
+
     @RequiredArgsConstructor
     static class InitService {
-        private EntityManager em;
+        private final EntityManager em;
 
         public void dbInit1() {
             MatchDay matchDay1 = new MatchDay(1L, LocalDateTime.now(), "away1", MatchState.BEFORE, new ArrayList<>());
-            MatchDay matchDay2 = new MatchDay(2L, LocalDateTime.now(), "away2", MatchState.DRAW, new ArrayList<>());
+            em.persist(matchDay1);
 
+            Player player = new Player("Hwan Woo", Position.DF, 66, 178, 67);
+            em.persist(player);
+
+            PlayMatch playMatch1 = new PlayMatch(player, matchDay1);
+            matchDay1.addPlayMatch(playMatch1);
+
+            MatchDay matchDay2 = new MatchDay(2L, LocalDateTime.now(), "away2", MatchState.DRAW, new ArrayList<>());
+            em.persist(matchDay2);
+            PlayMatch playMatch2 = new PlayMatch(player, matchDay2);
+            playMatch2.setGoals(1);
+            playMatch2.setAssists(1);
 
 /*
 Match Day

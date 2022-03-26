@@ -1,6 +1,6 @@
-package com.acroriver.server.domain.team.entity;
+package com.acroriver.server.team.entity;
 
-import com.acroriver.server.domain.team.entity.enums.MatchState;
+import com.acroriver.server.team.entity.enums.MatchState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,5 +33,12 @@ public class MatchDay {
     @OneToMany(mappedBy = "matchDay")
     private List<PlayMatch> playMatches = new ArrayList<>();
 
+    public void addPlayMatch(PlayMatch playMatch) {
+        this.playMatches.add(playMatch);
+    }
+
+    public void changeMatchState(MatchState state) {
+        this.state = state;
+    }
 
 }

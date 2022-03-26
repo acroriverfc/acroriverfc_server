@@ -1,16 +1,17 @@
-package com.acroriver.server.domain.team.dto;
+package com.acroriver.server.team.dto;
 
-import com.acroriver.server.domain.team.entity.PlayMatch;
-import com.acroriver.server.domain.team.entity.enums.Position;
+import com.acroriver.server.team.entity.PlayMatch;
+import com.acroriver.server.team.entity.enums.Position;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PlayerDto {
     private Long Id;
     private String playerName;
@@ -25,20 +26,6 @@ public class PlayerDto {
     private int goal;
     private int assists;
     private String description;
-    private List<PlayMatch> playMatchList = new ArrayList<>();
+    private List<PlayMatch> playMatchList;
 
-    public PlayerDto(Long id, String playerName, LocalDate birthDate, int height, int weight, Position position, int backNum, String imageUrl, int appearances, int goal, int assists, String description) {
-        Id = id;
-        this.playerName = playerName;
-        this.birthDate = birthDate;
-        this.height = height;
-        this.weight = weight;
-        this.position = position;
-        this.backNum = backNum;
-        this.imageUrl = imageUrl;
-        this.appearances = appearances;
-        this.goal = goal;
-        this.assists = assists;
-        this.description = description;
-    }
 }

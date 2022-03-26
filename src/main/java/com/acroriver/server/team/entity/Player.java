@@ -1,6 +1,6 @@
-package com.acroriver.server.domain.team.entity;
+package com.acroriver.server.team.entity;
 
-import com.acroriver.server.domain.team.entity.enums.Position;
+import com.acroriver.server.team.entity.enums.Position;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -58,11 +58,10 @@ public class Player {
     @OneToMany(mappedBy = "player")
     private List<PlayMatch> playMatches = new ArrayList<>();
 
-    public Player(String playerName, Position position, int backNum, int appearances, int height, int weight) {
+    public Player(String playerName, Position position, int backNum, int height, int weight) {
         this.playerName = playerName;
         this.position = position;
         this.backNum = backNum;
-        this.appearances = appearances;
         this.height = height;
         this.weight = weight;
     }

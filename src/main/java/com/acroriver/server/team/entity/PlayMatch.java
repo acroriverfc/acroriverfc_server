@@ -1,4 +1,4 @@
-package com.acroriver.server.domain.team.entity;
+package com.acroriver.server.team.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,8 +44,15 @@ public class PlayMatch {
         this.assists = assists;
     }
 
+    public void setGoals(int goals) {
+        this.goals = goals;
+    }
+
+    public void setAssists(int assists) {
+        this.assists = assists;
+    }
+
     public void setPlayer(Player player) {
         this.player = player;
     }
-
 }

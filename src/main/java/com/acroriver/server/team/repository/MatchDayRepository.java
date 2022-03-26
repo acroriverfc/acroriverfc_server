@@ -1,7 +1,7 @@
-package com.acroriver.server.domain.team.repository;
+package com.acroriver.server.team.repository;
 
-import com.acroriver.server.domain.team.entity.MatchDay;
-import com.acroriver.server.domain.team.entity.enums.MatchState;
+import com.acroriver.server.team.entity.MatchDay;
+import com.acroriver.server.team.entity.enums.MatchState;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
