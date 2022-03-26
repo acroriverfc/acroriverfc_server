@@ -1,15 +1,14 @@
 package com.acroriver.server.domain.team.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class PlayMatch {
 
     @Id
@@ -25,7 +24,28 @@ public class PlayMatch {
     @JoinColumn(name = "match_id")
     private MatchDay matchDay;
 
+    @Column(name = "goals")
+    @ColumnDefault("0")
     private int goals;
 
+    @Column(name = "assists")
+    @ColumnDefault("0")
     private int assists;
+
+    public PlayMatch(Player player, MatchDay matchDay) {
+        this.player = player;
+        this.matchDay = matchDay;
+    }
+
+    public PlayMatch(Player player, MatchDay matchDay, int goals, int assists) {
+        this.player = player;
+        this.matchDay = matchDay;
+        this.goals = goals;
+        this.assists = assists;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
 }

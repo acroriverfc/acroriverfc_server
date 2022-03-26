@@ -11,6 +11,4 @@ public interface MatchDayRepository extends JpaRepository<MatchDay, Long> {
     public MatchDay findMatchDayByAwayName(String awayName);
 
     public List<MatchDay> findMatchDayListByState(MatchState state);
-
-    public List<MatchDay> findAll();
 }

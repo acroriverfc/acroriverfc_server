@@ -13,6 +13,4 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     public Player findByBackNum(int backNum);
 
     public List<Player> findPlayersByPosition(Position position);
-
-    public List<Player> findAll();
 }

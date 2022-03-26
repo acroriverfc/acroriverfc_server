@@ -33,4 +33,5 @@ public class MatchDay {
     @OneToMany(mappedBy = "matchDay")
     private List<PlayMatch> playMatches = new ArrayList<>();
 
+
 }
