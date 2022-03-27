@@ -1,6 +1,7 @@
 package com.acroriver.server.team.entity;
 
 import com.acroriver.server.team.entity.enums.Position;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -13,14 +14,14 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class Player {
 
     @Id
     @GeneratedValue
     @Column(name = "player_id")
-    private Long Id;
+    private Long id;
 
-    @Column(nullable = false)
     private String playerName;
 
     private LocalDate birthDate;
@@ -29,11 +30,10 @@ public class Player {
 
     private int weight;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Position position;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private int backNum;
 
     @Lob
@@ -57,14 +57,6 @@ public class Player {
 
     @OneToMany(mappedBy = "player")
     private List<PlayMatch> playMatches = new ArrayList<>();
-
-    public Player(String playerName, Position position, int backNum, int height, int weight) {
-        this.playerName = playerName;
-        this.position = position;
-        this.backNum = backNum;
-        this.height = height;
-        this.weight = weight;
-    }
 
     // == 비즈니스 로직 == //
     public void changePlayerName(String playerName) {
@@ -122,4 +114,19 @@ public class Player {
         playMatches.add(playMatch);
         playMatch.setPlayer(this);
     }
+
+    // 출전한 경기 수 증가. 골이랑 어시 수 넘겨서 증가 시키기
+    public void updateMatchInfo(int goals, int assists) {
+        this.appearances += 1;
+        this.goals += goals;
+        this.assists += assists;
+    }
+
+    // 만약 존재하는 경기를 잘못 기록해서 삭제할 경우 감소.
+    public void deleteMatchInfo(int goals, int assists) {
+        this.appearances -= 1;
+        this.goals -= goals;
+        this.assists -= assists;
+    }
+
 }

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import java.util.List;
 
 public class MatchDayRepositorySupport extends QuerydslRepositorySupport {
-    private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory; // For Querydsl
 
     public MatchDayRepositorySupport(JPAQueryFactory jpaQueryFactory) {
         super(MatchDayDto.class);

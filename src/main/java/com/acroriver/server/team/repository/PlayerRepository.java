@@ -8,9 +8,7 @@ import java.util.List;
 
 
 public interface PlayerRepository extends JpaRepository<Player, Long> {
-    public Player findByPlayerName(String playerName);
-
     public Player findByBackNum(int backNum);
 
-    public List<Player> findPlayerByPosition(Position position);
+    public List<Player> findByPosition(Position position);
 }

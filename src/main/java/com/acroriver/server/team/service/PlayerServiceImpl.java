@@ -18,14 +18,20 @@ public class PlayerServiceImpl implements PlayerService {
     private final PlayerRepository playerRepository;
     private final ModelMapper modelMapper;
 
+
     @Override
-    public PlayerDto findById(Long id) {
+    public void save(Player player) {
+        playerRepository.save(player);
+    }
+
+    @Override
+    public PlayerDto findPlayerDtoById(Long id) {
         Player player = playerRepository.findById(id).get();
         return modelMapper.map(player, PlayerDto.class);
     }
 
     @Override
-    public List<PlayerDto> findAll() {
+    public List<PlayerDto> findAllPlayerDto() {
         List<Player> playerList = playerRepository.findAll();
         return playerList.stream()
                 .map(p -> modelMapper.map(p, PlayerDto.class))
@@ -33,15 +39,16 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<PlayerDto> findByPlayerPosition(Position position) {
-        List<Player> playerList = playerRepository.findPlayerByPosition(position);
+    public List<PlayerDto> findPlayerDtoByPosition(Position position) {
+        List<Player> playerList = playerRepository.findByPosition(position);
         return playerList.stream()
                 .map(p -> modelMapper.map(p, PlayerDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public PlayerDto findByBackNum(int backNum) {
-        return null;
+    public PlayerDto findPlayerDtoByBackNum(int backNum) {
+        Player player = playerRepository.findByBackNum(backNum);
+        return modelMapper.map(player, PlayerDto.class);
     }
 }

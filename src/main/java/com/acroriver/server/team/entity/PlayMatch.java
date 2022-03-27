@@ -32,17 +32,6 @@ public class PlayMatch {
     @ColumnDefault("0")
     private int assists;
 
-    public PlayMatch(Player player, MatchDay matchDay) {
-        this.player = player;
-        this.matchDay = matchDay;
-    }
-
-    public PlayMatch(Player player, MatchDay matchDay, int goals, int assists) {
-        this.player = player;
-        this.matchDay = matchDay;
-        this.goals = goals;
-        this.assists = assists;
-    }
 
     public void setGoals(int goals) {
         this.goals = goals;
@@ -54,5 +43,9 @@ public class PlayMatch {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public void setMatchDay(MatchDay matchDay) {
+        this.matchDay = matchDay;
     }
 }
