@@ -1,4 +1,4 @@
-package com.acroriver.server.domain.team.entity.enums;
+package com.acroriver.server.team.entity.enums;
 
 public enum MatchState {
     BEFORE, WIN, DRAW, LOSE

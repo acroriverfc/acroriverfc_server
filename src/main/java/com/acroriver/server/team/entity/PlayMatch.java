@@ -1,4 +1,4 @@
-package com.acroriver.server.domain.team.entity;
+package com.acroriver.server.team.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,15 +32,12 @@ public class PlayMatch {
     @ColumnDefault("0")
     private int assists;
 
-    public PlayMatch(Player player, MatchDay matchDay) {
-        this.player = player;
-        this.matchDay = matchDay;
+
+    public void setGoals(int goals) {
+        this.goals = goals;
     }
 
-    public PlayMatch(Player player, MatchDay matchDay, int goals, int assists) {
-        this.player = player;
-        this.matchDay = matchDay;
-        this.goals = goals;
+    public void setAssists(int assists) {
         this.assists = assists;
     }
 
@@ -48,4 +45,7 @@ public class PlayMatch {
         this.player = player;
     }
 
+    public void setMatchDay(MatchDay matchDay) {
+        this.matchDay = matchDay;
+    }
 }

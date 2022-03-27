@@ -1,7 +1,7 @@
-package com.acroriver.server.domain.team.dto;
+package com.acroriver.server.team.dto;
 
-import com.acroriver.server.domain.team.entity.MatchDay;
-import com.acroriver.server.domain.team.entity.Player;
+import com.acroriver.server.team.entity.MatchDay;
+import com.acroriver.server.team.entity.Player;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
