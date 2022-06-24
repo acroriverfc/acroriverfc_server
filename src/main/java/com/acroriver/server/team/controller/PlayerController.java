@@ -33,6 +33,4 @@ public class PlayerController {
         playerService.createPlayer(playerDto);
         return new ResponseEntity<>(playerDto, HttpStatus.CREATED);
     }
-
-
 }

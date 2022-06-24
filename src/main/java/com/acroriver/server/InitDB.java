@@ -62,26 +62,6 @@ public class InitDB {
             }
         }
 
-/*
-Match Day
-    @Id
-    @GeneratedValue
-    @Column(name = "match_id")
-    private Long Id;
-
-    @Column(nullable = false)
-    private LocalDateTime matchDate;
-
-    private String awayName;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private MatchState state;
-
-    @OneToMany(mappedBy = "matchDay")
-    private List<PlayMatch> playMatches = new ArrayList<>();
- */
-
         private Player makePlayer(int backNum, int height, int weight, String playerName) {
             Player player = new Player();
             player.changeBackNum(backNum);

@@ -1,10 +1,12 @@
 package com.acroriver.server.team.service;
 
+import com.acroriver.server.CustomModelMapper;
 import com.acroriver.server.team.dto.PlayerDto;
 import com.acroriver.server.team.entity.Player;
 import com.acroriver.server.team.entity.enums.Position;
 import com.acroriver.server.team.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -13,20 +15,33 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
-    private final ModelMapper modelMapper;
+    private final CustomModelMapper customModelMapper;
 
 
     @Override
     public void createPlayer(PlayerDto player) {
-        Player newPlayer = modelMapper.map(player, Player.class);
+        Player newPlayer = Player.builder()
+                .playerName(player.getPlayerName())
+                .birthDate(player.getBirthDate())
+                .backNum(player.getBackNum())
+                .imageUrl(player.getImageUrl())
+                .position(player.getPosition())
+                .description(player.getDescription())
+                .weight(player.getWeight())
+                .height(player.getHeight())
+                .build();
+
+        log.info("Player Id : " + newPlayer.getId());
         playerRepository.save(newPlayer);
     }
 
     @Override
     public PlayerDto findPlayerDtoById(Long id) {
+        ModelMapper modelMapper = customModelMapper.strictMapper();
         Player player = playerRepository.findById(id).get();
         return modelMapper.map(player, PlayerDto.class);
     }
@@ -34,6 +49,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public List<PlayerDto> findAllPlayerDto() {
         List<Player> playerList = playerRepository.findAll();
+        ModelMapper modelMapper = customModelMapper.strictMapper();
         return playerList.stream()
                 .map(p -> modelMapper.map(p, PlayerDto.class))
                 .collect(Collectors.toList());
@@ -42,6 +58,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public List<PlayerDto> findPlayerDtoByPosition(Position position) {
         List<Player> playerList = playerRepository.findByPosition(position);
+        ModelMapper modelMapper = customModelMapper.strictMapper();
         return playerList.stream()
                 .map(p -> modelMapper.map(p, PlayerDto.class))
                 .collect(Collectors.toList());
@@ -50,6 +67,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDto findPlayerDtoByBackNum(int backNum) {
         Player player = playerRepository.findByBackNum(backNum);
+        ModelMapper modelMapper = customModelMapper.strictMapper();
         return modelMapper.map(player, PlayerDto.class);
     }
 
