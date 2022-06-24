@@ -20,8 +20,9 @@ public class PlayerServiceImpl implements PlayerService {
 
 
     @Override
-    public void save(Player player) {
-        playerRepository.save(player);
+    public void createPlayer(PlayerDto player) {
+        Player newPlayer = modelMapper.map(player, Player.class);
+        playerRepository.save(newPlayer);
     }
 
     @Override
@@ -50,5 +51,11 @@ public class PlayerServiceImpl implements PlayerService {
     public PlayerDto findPlayerDtoByBackNum(int backNum) {
         Player player = playerRepository.findByBackNum(backNum);
         return modelMapper.map(player, PlayerDto.class);
+    }
+
+    @Override
+    public void changeBackNum(int backNum) {
+        Player player = playerRepository.findByBackNum(backNum);
+        player.changeBackNum(backNum);
     }
 }
