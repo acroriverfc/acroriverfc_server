@@ -1,10 +1,11 @@
 package com.acroriver.server.team.entity;
 
 import com.acroriver.server.team.entity.enums.Position;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,8 +14,8 @@ import java.util.List;
 
 @Getter
 @Entity
+@DynamicInsert
 @NoArgsConstructor
-@AllArgsConstructor
 public class Player {
 
     @Id
@@ -22,12 +23,15 @@ public class Player {
     @Column(name = "player_id")
     private Long id;
 
+    @Column(nullable = false)
     private String playerName;
 
     private LocalDate birthDate;
 
+    @Column(nullable = false)
     private int height;
 
+    @Column(nullable = false)
     private int weight;
 
     @Enumerated(EnumType.STRING)
@@ -57,6 +61,18 @@ public class Player {
 
     @OneToMany(mappedBy = "player")
     private List<PlayMatch> playMatches = new ArrayList<>();
+
+    @Builder
+    public Player(String playerName, LocalDate birthDate, int height, int weight, Position position, int backNum, String imageUrl, String description) {
+        this.playerName = playerName;
+        this.birthDate = birthDate;
+        this.height = height;
+        this.weight = weight;
+        this.position = position;
+        this.backNum = backNum;
+        this.imageUrl = imageUrl;
+        this.description = description;
+    }
 
     // == 비즈니스 로직 == //
     public void changePlayerName(String playerName) {
