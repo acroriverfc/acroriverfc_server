@@ -23,7 +23,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     database: mysql
     generate-ddl: true
 

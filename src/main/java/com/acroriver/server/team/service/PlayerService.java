@@ -21,4 +21,7 @@ public interface PlayerService {
 
     public void changeBackNum(int backNum);
 
+    // 경기 끝난 후, 자동으로 선수 기록 업데이트 해줘야 한다
+    public void updatePlayerStats(Long id);
+
 }

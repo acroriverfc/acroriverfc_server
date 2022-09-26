@@ -6,24 +6,29 @@ import com.acroriver.server.team.entity.PlayMatch;
 import com.acroriver.server.team.entity.Player;
 import com.acroriver.server.team.entity.enums.MatchState;
 import com.acroriver.server.team.repository.MatchDayRepository;
-import com.acroriver.server.team.repository.MatchDayRepositorySupport;
 import com.acroriver.server.team.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Service
 public class MatchDayServiceImpl implements MatchDayService {
 
     private final MatchDayRepository matchDayRepository;
-    private final MatchDayRepositorySupport matchDayRepositorySupport;
     private final PlayerRepository playerRepository;
     private final ModelMapper modelMapper;
 
     @Override
-    public void save(MatchDay matchDay) {
+    public void createMatchDay(MatchDayDto matchDayDto) {
+        MatchDay matchDay = MatchDay.builder()
+                .matchDate(matchDayDto.getMatchDate())
+                .awayName(matchDayDto.getAwayName())
+                .state(MatchState.BEFORE)
+                .build();
         matchDayRepository.save(matchDay);
     }
 
@@ -43,7 +48,7 @@ public class MatchDayServiceImpl implements MatchDayService {
 
     @Override
     public List<MatchDayDto> findByMonth(int month) {
-        List<MatchDay> matchDayList = matchDayRepositorySupport.findByMonth(month);
+        List<MatchDay> matchDayList = matchDayRepository.findByMonth(month);
         return matchDayList.stream().
                 map(p -> modelMapper.map(p, MatchDayDto.class))
                 .collect(Collectors.toList());
@@ -68,19 +73,4 @@ public class MatchDayServiceImpl implements MatchDayService {
         player.addPlayMatch(playMatch);
         matchDay.addPlayMatch(playMatch);
     }
-
-
-    @Override
-    public void updateMatchDayPlayer(Long matchId, Long playerId, int goals, int assists) {
-        MatchDay matchDay = matchDayRepository.findById(matchId).get();
-        Player player = playerRepository.findById(playerId).get();
-        // 여기에 이제 출전경기를 추출해서 골 / 어시 업데이트
-        // 추출하는 방법 : List 에서 player_id 랑 match_id 같은거 찾으면 되지 않을까?
-
-        player.updateMatchInfo(goals, assists);
-
-        playerRepository.save(player);
-        matchDayRepository.save(matchDay);
-    }
-
 }

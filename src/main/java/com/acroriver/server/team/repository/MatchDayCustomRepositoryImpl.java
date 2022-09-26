@@ -1,23 +1,22 @@
 package com.acroriver.server.team.repository;
 
-import com.acroriver.server.team.dto.MatchDayDto;
 import com.acroriver.server.team.entity.MatchDay;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
 
-public class MatchDayRepositorySupport extends QuerydslRepositorySupport {
-    private final JPAQueryFactory queryFactory; // For Querydsl
+public class MatchDayCustomRepositoryImpl extends QuerydslRepositorySupport implements MatchDayCustomRepository {
 
-    public MatchDayRepositorySupport(JPAQueryFactory jpaQueryFactory) {
-        super(MatchDayDto.class);
+    private final JPAQueryFactory queryFactory;
+
+    public MatchDayCustomRepositoryImpl(JPAQueryFactory jpaQueryFactory) {
+        super(MatchDay.class);
         this.queryFactory = jpaQueryFactory;
     }
 
-
+    @Override
     public List<MatchDay> findByMonth(int month) {
-        //queryFactory.query()
         return null;
     }
 }

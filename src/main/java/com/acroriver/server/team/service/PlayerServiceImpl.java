@@ -1,6 +1,5 @@
 package com.acroriver.server.team.service;
 
-import com.acroriver.server.CustomModelMapper;
 import com.acroriver.server.team.dto.PlayerDto;
 import com.acroriver.server.team.entity.Player;
 import com.acroriver.server.team.entity.enums.Position;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
-    private final CustomModelMapper customModelMapper;
+    private final ModelMapper modelMapper;
 
 
     @Override
@@ -41,7 +40,6 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public PlayerDto findPlayerDtoById(Long id) {
-        ModelMapper modelMapper = customModelMapper.strictMapper();
         Player player = playerRepository.findById(id).get();
         return modelMapper.map(player, PlayerDto.class);
     }
@@ -49,7 +47,6 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public List<PlayerDto> findAllPlayerDto() {
         List<Player> playerList = playerRepository.findAll();
-        ModelMapper modelMapper = customModelMapper.strictMapper();
         return playerList.stream()
                 .map(p -> modelMapper.map(p, PlayerDto.class))
                 .collect(Collectors.toList());
@@ -58,7 +55,6 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public List<PlayerDto> findPlayerDtoByPosition(Position position) {
         List<Player> playerList = playerRepository.findByPosition(position);
-        ModelMapper modelMapper = customModelMapper.strictMapper();
         return playerList.stream()
                 .map(p -> modelMapper.map(p, PlayerDto.class))
                 .collect(Collectors.toList());
@@ -67,7 +63,6 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDto findPlayerDtoByBackNum(int backNum) {
         Player player = playerRepository.findByBackNum(backNum);
-        ModelMapper modelMapper = customModelMapper.strictMapper();
         return modelMapper.map(player, PlayerDto.class);
     }
 
@@ -76,4 +71,11 @@ public class PlayerServiceImpl implements PlayerService {
         Player player = playerRepository.findByBackNum(backNum);
         player.changeBackNum(backNum);
     }
+
+    @Override
+    public void updatePlayerStats(Long id) {
+        Player player = playerRepository.findById(id).get();
+
+    }
+
 }

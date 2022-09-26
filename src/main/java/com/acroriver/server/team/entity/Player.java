@@ -119,12 +119,6 @@ public class Player {
         this.description = description;
     }
 
-    public void changeMatchInfo(int appearances, int goals, int assists) {
-        this.appearances = appearances;
-        this.goals = goals;
-        this.assists = assists;
-    }
-
     // == 연관관계 메서드 == //
     public void addPlayMatch(PlayMatch playMatch) {
         playMatches.add(playMatch);
@@ -132,17 +126,9 @@ public class Player {
     }
 
     // 출전한 경기 수 증가. 골이랑 어시 수 넘겨서 증가 시키기
-    public void updateMatchInfo(int goals, int assists) {
+    public void updateStats(int goals, int assists) {
         this.appearances += 1;
         this.goals += goals;
         this.assists += assists;
     }
-
-    // 만약 존재하는 경기를 잘못 기록해서 삭제할 경우 감소.
-    public void deleteMatchInfo(int goals, int assists) {
-        this.appearances -= 1;
-        this.goals -= goals;
-        this.assists -= assists;
-    }
-
 }

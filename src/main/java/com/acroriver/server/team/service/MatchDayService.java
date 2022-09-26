@@ -1,7 +1,6 @@
 package com.acroriver.server.team.service;
 
 import com.acroriver.server.team.dto.MatchDayDto;
-import com.acroriver.server.team.entity.MatchDay;
 import com.acroriver.server.team.entity.enums.MatchState;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,12 +10,14 @@ import java.util.List;
 @Service
 public interface MatchDayService {
 
-    public void save(MatchDay matchDay);
+    // 경기 생성
+    public void createMatchDay(MatchDayDto matchDayDto);
 
     public List<MatchDayDto> findAll();
 
     public MatchDayDto findOne(Long matchId);
 
+    // 월 별 경기 일정
     public List<MatchDayDto> findByMonth(int month);
 
     @Transactional
@@ -26,7 +27,4 @@ public interface MatchDayService {
     @Transactional
     public void createPlayMatch(Long matchId, Long playerId);
 
-    // 기록 업데이트 하기
-    @Transactional
-    public void updateMatchDayPlayer(Long matchId, Long playerId, int goals, int assists);
 }

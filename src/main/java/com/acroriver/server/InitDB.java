@@ -1,25 +1,15 @@
 package com.acroriver.server;
 
-import com.acroriver.server.team.entity.MatchDay;
-import com.acroriver.server.team.entity.PlayMatch;
-import com.acroriver.server.team.entity.Player;
-import com.acroriver.server.team.entity.enums.MatchState;
-import com.acroriver.server.team.entity.enums.Position;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class InitDB {
 
+    /*
     private final InitService initService;
 
 
@@ -73,4 +63,5 @@ public class InitDB {
             return player;
         }
     }
+     */
 }
