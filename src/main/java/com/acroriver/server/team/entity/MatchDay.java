@@ -2,8 +2,10 @@ package com.acroriver.server.team.entity;
 
 import com.acroriver.server.team.entity.enums.MatchState;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,7 +19,7 @@ import java.util.List;
 public class MatchDay {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "match_id")
     private Long id;
 
@@ -28,15 +30,29 @@ public class MatchDay {
     @Enumerated(EnumType.STRING)
     private MatchState state;
 
+    // 우리 팀과 상대 팀 득점 수
+    @ColumnDefault("0")
+    private int goals;
+
+    @ColumnDefault("0")
+    private int awayGoals;
+
+    // 다 대 다 관계를 분산
     @OneToMany(mappedBy = "matchDay")
     private List<PlayMatch> playMatches = new ArrayList<>();
 
-    public void changeAwayName(String awayName) {
+    // 경기 생성
+    @Builder
+    public MatchDay(LocalDateTime matchDate, String awayName, MatchState state) {
+        this.matchDate = matchDate;
         this.awayName = awayName;
+        this.state = state;
     }
 
-    public void changeMatchDate(LocalDateTime matchDate) {
+    public void changeMatchInfo(String awayName, LocalDateTime matchDate, MatchState state) {
+        this.awayName = awayName;
         this.matchDate = matchDate;
+        this.state = state;
     }
 
     public void changeMatchState(MatchState state) {

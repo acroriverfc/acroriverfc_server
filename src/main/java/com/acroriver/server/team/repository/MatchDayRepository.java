@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface MatchDayRepository extends JpaRepository<MatchDay, Long> {
+public interface MatchDayRepository extends JpaRepository<MatchDay, Long>, MatchDayCustomRepository {
     public List<MatchDay> findByState(MatchState state);
 }

@@ -1,5 +1,6 @@
 package com.acroriver.server.team.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -7,13 +8,20 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "constraintName",
+                        columnNames = {"player_id", "match_id"}
+                )
+        }
+)
 @Getter
 @NoArgsConstructor
 public class PlayMatch {
 
     @Id
-    @GeneratedValue
-    @Column(name = "play_match_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,11 +41,19 @@ public class PlayMatch {
     private int assists;
 
 
-    public void setGoals(int goals) {
+    @Builder
+    public PlayMatch(Player player, MatchDay matchDay) {
+        this.player = player;
+        this.matchDay = matchDay;
+        this.goals = 0;
+        this.assists = 0;
+    }
+
+    public void updateGoals(int goals) {
         this.goals = goals;
     }
 
-    public void setAssists(int assists) {
+    public void updateAssists(int assists) {
         this.assists = assists;
     }
 
