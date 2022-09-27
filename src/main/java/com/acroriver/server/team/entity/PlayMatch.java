@@ -8,17 +8,26 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "constraintName",
+                        columnNames = {"player_id", "match_id"}
+                )
+        }
+)
 @Getter
 @NoArgsConstructor
-@IdClass(PlayMatchId.class)
 public class PlayMatch {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id")
     private Player player;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "match_id")
     private MatchDay matchDay;

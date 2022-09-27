@@ -4,6 +4,6 @@ import com.acroriver.server.team.entity.MatchDay;
 
 import java.util.List;
 
-public interface MatchDayCustomRepository<T> {
+public interface MatchDayCustomRepository {
     public List<MatchDay> findByMonth(int month);
 }

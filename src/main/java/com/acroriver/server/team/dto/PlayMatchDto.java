@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PlayMatchDto {
     private Long playerId;
+    private Long matchId;
     private int goals;
     private int assists;
 }
