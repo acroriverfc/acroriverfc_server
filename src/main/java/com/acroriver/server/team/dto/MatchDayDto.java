@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,5 +16,4 @@ public class MatchDayDto {
     private LocalDateTime matchDate;
     private String awayName;
     private MatchState state;
-    private List<PlayMatchDto> playMatchList;
 }

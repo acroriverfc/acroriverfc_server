@@ -17,8 +17,10 @@ public interface MatchDayService {
 
     public MatchDayDto findOne(Long matchId);
 
+    public List<MatchDayDto> findByState(String state);
+
     // 월 별 경기 일정
-    public List<MatchDayDto> findByMonth(int month);
+    public List<MatchDayDto> findByDate(int year, int month);
 
     @Transactional
     public void updateMatchResult(Long matchId, MatchState matchState);
