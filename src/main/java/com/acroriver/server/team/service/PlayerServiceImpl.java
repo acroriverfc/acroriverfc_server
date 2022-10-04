@@ -7,8 +7,11 @@ import com.acroriver.server.team.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,12 +23,11 @@ public class PlayerServiceImpl implements PlayerService {
     private final PlayerRepository playerRepository;
     private final ModelMapper modelMapper;
 
-
     @Override
     public void createPlayer(PlayerDto player) {
         Player newPlayer = Player.builder()
                 .playerName(player.getPlayerName())
-                .birthDate(player.getBirthDate())
+                .birthDate(LocalDate.parse(player.getBirthDate(), DateTimeFormatter.ISO_DATE))
                 .backNum(player.getBackNum())
                 .imageUrl(player.getImageUrl())
                 .position(player.getPosition())
@@ -34,7 +36,6 @@ public class PlayerServiceImpl implements PlayerService {
                 .height(player.getHeight())
                 .build();
 
-        log.info("Player Id : " + newPlayer.getId());
         playerRepository.save(newPlayer);
     }
 
@@ -46,7 +47,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public List<PlayerDto> findAllPlayerDto() {
-        List<Player> playerList = playerRepository.findAll();
+        List<Player> playerList = playerRepository.findAll(Sort.by("backNum"));
         return playerList.stream()
                 .map(p -> modelMapper.map(p, PlayerDto.class))
                 .collect(Collectors.toList());
@@ -54,7 +55,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public List<PlayerDto> findPlayerDtoByPosition(Position position) {
-        List<Player> playerList = playerRepository.findByPosition(position);
+        List<Player> playerList = playerRepository.findByPositionOrderByBackNum(position);
         return playerList.stream()
                 .map(p -> modelMapper.map(p, PlayerDto.class))
                 .collect(Collectors.toList());
@@ -72,4 +73,17 @@ public class PlayerServiceImpl implements PlayerService {
         player.changeBackNum(backNum);
     }
 
+    @Override
+    public void updatePlayerInfo(PlayerDto playerDto) {
+        Player player = playerRepository.findByBackNum(playerDto.getBackNum());
+        player.changeImageUrl(playerDto.getImageUrl());
+        player.changePlayerName(playerDto.getPlayerName());
+        player.changeBirthDate(playerDto.getBirthDate());
+        player.changeWeight(playerDto.getWeight());
+        player.changeHeight(playerDto.getHeight());
+        player.changeDescription(playerDto.getDescription());
+        player.changePosition(playerDto.getPosition());
+        player.changeBackNum(playerDto.getBackNum());
+        playerRepository.save(player);
+    }
 }

@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,8 +83,10 @@ public class Player {
         this.playerName = playerName;
     }
 
-    public void changeBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void changeBirthDate(String birthDate) {
+        if (birthDate == null)
+            return;
+        this.birthDate = LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE);
     }
 
     public void changeBackNum(int backNum) {
@@ -91,10 +94,14 @@ public class Player {
     }
 
     public void changeHeight(int height) {
+        if (height == 0)
+            return;
         this.height = height;
     }
 
     public void changeWeight(int weight) {
+        if (weight == 0)
+            return;
         this.weight = weight;
     }
 

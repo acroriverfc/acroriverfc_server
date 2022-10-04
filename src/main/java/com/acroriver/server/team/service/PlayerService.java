@@ -21,5 +21,6 @@ public interface PlayerService {
 
     public void changeBackNum(int backNum);
 
+    public void updatePlayerInfo(PlayerDto playerDto);
 
 }

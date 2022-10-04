@@ -6,15 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayerDto {
     private String playerName;
-    private LocalDate birthDate;
+    private String birthDate;
     private int height;
     private int weight;
     private int appearances;
