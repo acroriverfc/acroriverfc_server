@@ -126,9 +126,9 @@ public class Player {
     }
 
     // 출전한 경기 수 증가. 골이랑 어시 수 넘겨서 증가 시키기
-    public void updateStats(int goals, int assists) {
-        this.appearances += 1;
-        this.goals += goals;
-        this.assists += assists;
+    public void updateStats(int appearances, int goals, int assists) {
+        this.appearances = appearances;
+        this.goals = goals;
+        this.assists = assists;
     }
 }

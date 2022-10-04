@@ -72,10 +72,4 @@ public class PlayerServiceImpl implements PlayerService {
         player.changeBackNum(backNum);
     }
 
-    @Override
-    public void updatePlayerStats(Long id) {
-        Player player = playerRepository.findById(id).get();
-
-    }
-
 }

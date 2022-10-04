@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 @Slf4j
@@ -28,6 +29,24 @@ public class GlobalExceptionHandler {
         log.error("SQLException", e);
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .code("SQL 오류")
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    protected ResponseEntity<ErrorResponse> handleNoElementException(NoSuchElementException e) {
+        final ErrorResponse errorResponse = ErrorResponse.builder()
+                .code("해당 항목이 존재하지 않습니다.")
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    protected ResponseEntity<ErrorResponse> handleNullPointerException(NullPointerException e) {
+        final ErrorResponse errorResponse = ErrorResponse.builder()
+                .code("Null Pointer Exception")
                 .message(e.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
