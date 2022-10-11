@@ -13,7 +13,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MatchDayDto {
+    private Long matchId;
     private LocalDateTime matchDate;
     private String awayName;
+    private String stadium;
     private MatchState state;
+    private int goals;
+    private int awayGoals;
 }

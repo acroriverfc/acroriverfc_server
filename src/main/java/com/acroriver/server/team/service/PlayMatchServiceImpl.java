@@ -10,6 +10,7 @@ import com.acroriver.server.team.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class PlayMatchServiceImpl implements PlayMatchService {
     private final MatchDayRepository matchDayRepository;
     private final ModelMapper modelMapper;
 
+    @Transactional
     @Override
     public void addPlayerToMatch(Long playerId, Long matchId) {
         Player player = playerRepository.findById(playerId).get();
@@ -33,15 +35,19 @@ public class PlayMatchServiceImpl implements PlayMatchService {
 
         matchDay.addPlayMatch(playMatch);
         player.addPlayMatch(playMatch);
+        matchDayRepository.save(matchDay);
+        playerRepository.save(player);
         playMatchRepository.save(playMatch);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PlayMatchDto findPlayMatchById(Long playMatchId) {
         PlayMatch playMatch = playMatchRepository.findById(playMatchId).get();
         return modelMapper.map(playMatch, PlayMatchDto.class);
     }
 
+    @Transactional
     @Override
     public void updatePlayMatchStats(Long playerId, Long matchId, int goal, int assists) {
         PlayMatch playMatch = playMatchRepository.findByTwoIds(playerId, matchId);
@@ -62,6 +68,7 @@ public class PlayMatchServiceImpl implements PlayMatchService {
 
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PlayMatchDto findPlayMatchByTwoIds(Long playerId, Long matchId) {
         PlayMatch playMatch = playMatchRepository.findByTwoIds(playerId, matchId);

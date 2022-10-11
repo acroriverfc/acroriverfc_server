@@ -1,6 +1,7 @@
 package com.acroriver.server.team.controller;
 
 import com.acroriver.server.team.dto.PlayerDto;
+import com.acroriver.server.team.entity.enums.Position;
 import com.acroriver.server.team.service.PlayerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,12 @@ public class PlayerController {
     public ResponseEntity<PlayerDto> findPlayerByBackNum(@PathVariable int backNum) {
         PlayerDto findPlayer = playerService.findPlayerDtoByBackNum(backNum);
         return new ResponseEntity<>(findPlayer, HttpStatus.OK);
+    }
+
+    @GetMapping("/player/position/{position}")
+    public List<PlayerDto> findPlayerByPosition(@PathVariable String position) {
+        position = position.toUpperCase();
+        return playerService.findPlayerDtoByPosition(Position.valueOf(position));
     }
 
     // 플레이어 생성

@@ -23,17 +23,22 @@ public class MatchDay {
     @Column(name = "match_id")
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private LocalDateTime matchDate;
 
     private String awayName;
 
+    // 경기장 이름
+    private String stadium;
+
     @Enumerated(EnumType.STRING)
     private MatchState state;
 
-    // 우리 팀과 상대 팀 득점 수
+    // 우리 팀 득점 수
     @ColumnDefault("0")
     private int goals;
 
+    // 상대 팀 득점 수
     @ColumnDefault("0")
     private int awayGoals;
 
@@ -49,13 +54,35 @@ public class MatchDay {
         this.state = state;
     }
 
-    public void changeMatchInfo(String awayName, LocalDateTime matchDate, MatchState state) {
+    public void changeMatchAwayName(String awayName) {
+        if (awayName == null)
+            return;
         this.awayName = awayName;
+    }
+
+    public void changeMatchDate(LocalDateTime matchDate) {
+        if (matchDate == null)
+            return;
         this.matchDate = matchDate;
-        this.state = state;
+    }
+
+    public void changeStadium(String stadium) {
+        if (stadium == null)
+            return;
+        this.stadium = stadium;
+    }
+
+    public void changeGoals(int goals) {
+        this.goals = goals;
+    }
+
+    public void changeAwayGoals(int awayGoals) {
+        this.awayGoals = awayGoals;
     }
 
     public void changeMatchState(MatchState state) {
+        if (state == null)
+            return;
         this.state = state;
     }
 

@@ -19,8 +19,6 @@ public interface PlayerService {
 
     public PlayerDto findPlayerDtoByBackNum(int backNum);
 
-    public void changeBackNum(int backNum);
-
     public void updatePlayerInfo(PlayerDto playerDto);
 
 }
