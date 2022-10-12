@@ -25,14 +25,10 @@ public class MatchDayCustomRepositoryImpl extends QuerydslRepositorySupport impl
     }
 
     @Override
-    public List<MatchDay> findByMonth(int month) {
-        return null;
-    }
-
-    @Override
     public List<MatchDay> findByState(MatchState state) {
         return queryFactory.selectFrom(matchDay)
                 .where(matchDay.state.eq(state))
+                .orderBy(matchDay.matchDate.asc())
                 .fetch();
     }
 
@@ -45,6 +41,7 @@ public class MatchDayCustomRepositoryImpl extends QuerydslRepositorySupport impl
 
         return queryFactory.selectFrom(matchDay)
                 .where(matchDay.matchDate.between(startTime, endTime))
+                .orderBy(matchDay.matchDate.asc())
                 .fetch();
     }
 }

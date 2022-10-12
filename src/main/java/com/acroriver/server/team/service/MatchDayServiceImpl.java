@@ -26,7 +26,11 @@ public class MatchDayServiceImpl implements MatchDayService {
                 .matchDate(matchDayDto.getMatchDate())
                 .awayName(matchDayDto.getAwayName())
                 .state(matchDayDto.getState())
+                .stadium(matchDayDto.getStadium())
+                .goals(matchDayDto.getGoals())
+                .awayGoals(matchDayDto.getAwayGoals())
                 .build();
+
         matchDayRepository.save(matchDay);
     }
 

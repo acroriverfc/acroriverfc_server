@@ -48,10 +48,13 @@ public class MatchDay {
 
     // 경기 생성
     @Builder
-    public MatchDay(LocalDateTime matchDate, String awayName, MatchState state) {
+    public MatchDay(LocalDateTime matchDate, String awayName, MatchState state, String stadium, int goals, int awayGoals) {
         this.matchDate = matchDate;
         this.awayName = awayName;
         this.state = state;
+        this.stadium = stadium;
+        this.goals = goals;
+        this.awayGoals = awayGoals;
     }
 
     public void changeMatchAwayName(String awayName) {
