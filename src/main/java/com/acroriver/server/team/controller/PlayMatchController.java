@@ -13,9 +13,9 @@ public class PlayMatchController {
 
     private final PlayMatchService playMatchService;
 
-    @PostMapping("/playMatch/{playerId}/{matchId}")
-    public ResponseEntity<String> addPlayMatch(@PathVariable String playerId, @PathVariable String matchId) {
-        playMatchService.addPlayerToMatch(Long.parseLong(playerId), Long.parseLong(matchId));
+    @PostMapping("/playMatch/{playerId}")
+    public ResponseEntity<String> addPlayMatch(@PathVariable Long playerId, @RequestParam("matchId") Long matchId) {
+        playMatchService.addPlayerToMatch(playerId, matchId);
         return new ResponseEntity<>("성공적으로 추가 되었습니다.", HttpStatus.CREATED);
     }
 

@@ -21,4 +21,5 @@ public interface PlayerService {
 
     public void updatePlayerInfo(PlayerDto playerDto);
 
+    public List<List<PlayerDto>> findFivePlayers();
 }

@@ -49,4 +49,10 @@ public class PlayerController {
         playerService.updatePlayerInfo(playerDto);
         return new ResponseEntity<>(playerDto, HttpStatus.ACCEPTED);
     }
+
+    @GetMapping("/player/rank")
+    public ResponseEntity<List<List<PlayerDto>>> findPlayerRank() {
+        List<List<PlayerDto>> fivePlayers = playerService.findFivePlayers();
+        return new ResponseEntity<>(fivePlayers, HttpStatus.ACCEPTED);
+    }
 }

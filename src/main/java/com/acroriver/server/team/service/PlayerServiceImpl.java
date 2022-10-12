@@ -7,10 +7,10 @@ import com.acroriver.server.team.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +49,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Transactional(readOnly = true)
     @Override
     public List<PlayerDto> findAllPlayerDto() {
-        List<Player> playerList = playerRepository.findAll(Sort.by("backNum"));
+        List<Player> playerList = playerRepository.findAll();
         return playerList.stream()
                 .map(p -> modelMapper.map(p, PlayerDto.class))
                 .collect(Collectors.toList());
@@ -85,4 +85,19 @@ public class PlayerServiceImpl implements PlayerService {
         player.changeBackNum(playerDto.getBackNum());
         playerRepository.save(player);
     }
+
+    @Override
+    public List<List<PlayerDto>> findFivePlayers() {
+        List<List<PlayerDto>> ret = new ArrayList<>();
+        List<List<Player>> rank = playerRepository.findRank();
+        log.info(rank.toString());
+        for (List<Player> playerList : rank) {
+            ret.add(playerList.stream().limit(5).map(
+                            p -> modelMapper.map(p, PlayerDto.class))
+                    .collect(Collectors.toList()));
+        }
+        return ret;
+    }
+
+
 }
