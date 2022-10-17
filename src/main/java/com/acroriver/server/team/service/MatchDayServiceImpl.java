@@ -82,4 +82,10 @@ public class MatchDayServiceImpl implements MatchDayService {
         matchDayRepository.save(matchDay);
     }
 
+    @Override
+    public MatchDayDto findNextMatch() {
+        MatchDay nextMatch = matchDayRepository.findNextMatch();
+        return modelMapper.map(nextMatch, MatchDayDto.class);
+    }
+
 }

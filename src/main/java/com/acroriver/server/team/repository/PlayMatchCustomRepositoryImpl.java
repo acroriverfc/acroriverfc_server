@@ -4,13 +4,11 @@ package com.acroriver.server.team.repository;
 import com.acroriver.server.team.entity.PlayMatch;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static com.acroriver.server.team.entity.QPlayMatch.playMatch;
 
-@Repository
 public class PlayMatchCustomRepositoryImpl extends QuerydslRepositorySupport implements PlayMatchCustomRepository {
 
     private final JPAQueryFactory queryFactory;

@@ -9,4 +9,6 @@ public interface MatchDayCustomRepository {
     public List<MatchDay> findByState(MatchState state);
 
     public List<MatchDay> findByDate(int year, int month);
+
+    public MatchDay findNextMatch();
 }

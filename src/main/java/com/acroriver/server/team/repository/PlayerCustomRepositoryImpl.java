@@ -6,7 +6,6 @@ import com.acroriver.server.team.repository.comparator.PlayerComparator;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.stream.Collectors;
 import static com.acroriver.server.team.entity.QPlayer.player;
 
 @Slf4j
-@Repository
 public class PlayerCustomRepositoryImpl extends QuerydslRepositorySupport implements PlayerCustomRepository {
 
     private final JPAQueryFactory queryFactory;

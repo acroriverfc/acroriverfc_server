@@ -4,7 +4,6 @@ import com.acroriver.server.team.entity.MatchDay;
 import com.acroriver.server.team.entity.enums.MatchState;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,7 +13,6 @@ import java.util.List;
 
 import static com.acroriver.server.team.entity.QMatchDay.matchDay;
 
-@Repository
 public class MatchDayCustomRepositoryImpl extends QuerydslRepositorySupport implements MatchDayCustomRepository {
 
     private final JPAQueryFactory queryFactory;
@@ -43,5 +41,14 @@ public class MatchDayCustomRepositoryImpl extends QuerydslRepositorySupport impl
                 .where(matchDay.matchDate.between(startTime, endTime))
                 .orderBy(matchDay.matchDate.asc())
                 .fetch();
+    }
+
+    @Override
+    public MatchDay findNextMatch() {
+        LocalDateTime now = LocalDateTime.now();
+        return queryFactory.selectFrom(matchDay)
+                .where(matchDay.matchDate.after(now))
+                .orderBy(matchDay.matchDate.asc())
+                .fetchFirst();
     }
 }
