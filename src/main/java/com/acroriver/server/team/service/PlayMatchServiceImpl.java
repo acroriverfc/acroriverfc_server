@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PlayMatchServiceImpl implements PlayMatchService {
@@ -41,12 +43,23 @@ public class PlayMatchServiceImpl implements PlayMatchService {
     }
 
     @Override
-    public void updatePlayerStats(Long playerId, Long matchId, int goal, int assists) {
-        //PlayMatch playMatch = playMatchRepository.findById(new PlayMatchId(playerId, matchId)).get();
-        //playMatch.updateAssists(assists);
-        //playMatch.updateGoals(goal);
+    public void updatePlayMatchStats(Long playerId, Long matchId, int goal, int assists) {
+        PlayMatch playMatch = playMatchRepository.findByTwoIds(playerId, matchId);
+        playMatch.updateAssists(assists);
+        playMatch.updateGoals(goal);
+        playMatchRepository.save(playMatch);
 
-        // 여기서 이제 쿼리 날려서 선수 개인 기록 업데이트 해야 한다.
+        int totalGoals = 0;
+        int totalAssists = 0;
+        List<PlayMatch> playMatchList = playMatchRepository.findByPlayerId(playerId);
+        for (PlayMatch match : playMatchList) {
+            totalGoals += match.getGoals();
+            totalAssists += match.getAssists();
+        }
+        Player player = playerRepository.findById(playerId).get();
+        player.updateStats(playMatchList.size(), totalGoals, totalAssists);
+        playerRepository.save(player);
+
     }
 
     @Override

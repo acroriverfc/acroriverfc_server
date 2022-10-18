@@ -5,10 +5,7 @@ import com.acroriver.server.team.service.PlayMatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,8 +13,8 @@ public class PlayMatchController {
 
     private final PlayMatchService playMatchService;
 
-    @PostMapping("/playMatch")
-    public ResponseEntity<String> addPlayMatch(@RequestParam String playerId, @RequestParam String matchId) {
+    @PostMapping("/playMatch/{playerId}/{matchId}")
+    public ResponseEntity<String> addPlayMatch(@PathVariable String playerId, @PathVariable String matchId) {
         playMatchService.addPlayerToMatch(Long.parseLong(playerId), Long.parseLong(matchId));
         return new ResponseEntity<>("성공적으로 추가 되었습니다.", HttpStatus.CREATED);
     }
@@ -28,5 +25,11 @@ public class PlayMatchController {
         Long pid = Long.parseLong(playerId);
         Long mid = Long.parseLong(matchId);
         return new ResponseEntity<>(playMatchService.findPlayMatchByTwoIds(pid, mid), HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/playMatch")
+    public ResponseEntity<PlayMatchDto> updatePlayMatch(@RequestBody PlayMatchDto playMatchDto) {
+        playMatchService.updatePlayMatchStats(playMatchDto.getPlayerId(), playMatchDto.getMatchId(), playMatchDto.getGoals(), playMatchDto.getAssists());
+        return new ResponseEntity<>(playMatchDto, HttpStatus.CREATED);
     }
 }

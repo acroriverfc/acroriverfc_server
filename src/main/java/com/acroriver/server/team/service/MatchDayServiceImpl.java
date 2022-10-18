@@ -27,7 +27,7 @@ public class MatchDayServiceImpl implements MatchDayService {
         MatchDay matchDay = MatchDay.builder()
                 .matchDate(matchDayDto.getMatchDate())
                 .awayName(matchDayDto.getAwayName())
-                .state(MatchState.BEFORE)
+                .state(matchDayDto.getState())
                 .build();
         matchDayRepository.save(matchDay);
     }
@@ -47,12 +47,20 @@ public class MatchDayServiceImpl implements MatchDayService {
     }
 
     @Override
-    public List<MatchDayDto> findByMonth(int month) {
-        List<MatchDay> matchDayList = matchDayRepository.findByMonth(month);
+    public List<MatchDayDto> findByState(String state) {
+        MatchState matchState = MatchState.valueOf(state);
+        List<MatchDay> matchDayList = matchDayRepository.findByState(matchState);
         return matchDayList.stream().
                 map(p -> modelMapper.map(p, MatchDayDto.class))
                 .collect(Collectors.toList());
+    }
 
+    @Override
+    public List<MatchDayDto> findByDate(int year, int month) {
+        List<MatchDay> matchDayList = matchDayRepository.findByDate(year, month);
+        return matchDayList.stream().
+                map(p -> modelMapper.map(p, MatchDayDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override

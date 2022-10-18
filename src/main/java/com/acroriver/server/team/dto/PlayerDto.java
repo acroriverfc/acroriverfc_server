@@ -17,6 +17,9 @@ public class PlayerDto {
     private LocalDate birthDate;
     private int height;
     private int weight;
+    private int appearances;
+    private int goals;
+    private int assists;
     private Position position;
     private int backNum;
     private String imageUrl;

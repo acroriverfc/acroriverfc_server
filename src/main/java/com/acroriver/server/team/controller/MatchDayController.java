@@ -5,10 +5,7 @@ import com.acroriver.server.team.service.MatchDayServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +27,17 @@ public class MatchDayController {
         return new ResponseEntity<>(matchDayDto, HttpStatus.CREATED);
     }
 
+    // 날짜 기준 경기 조회
+    @GetMapping("/matchDay")
+    public ResponseEntity<List<MatchDayDto>> findMatchDayByDate(@RequestParam("year") String year, @RequestParam("month") String month) {
+        List<MatchDayDto> matchDayList = matchDayService.findByDate(Integer.parseInt(year), Integer.parseInt(month));
+        return new ResponseEntity<>(matchDayList, HttpStatus.ACCEPTED);
+    }
 
+    // 경기 상태 기준 경기 조회y
+    @GetMapping("/matchDay/{state}")
+    public ResponseEntity<List<MatchDayDto>> findMatchDayByState(@PathVariable String state) {
+        List<MatchDayDto> matchDayList = matchDayService.findByState(state);
+        return new ResponseEntity<>(matchDayList, HttpStatus.ACCEPTED);
+    }
 }

@@ -6,6 +6,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import static com.acroriver.server.team.entity.QPlayMatch.playMatch;
 
 @Repository
@@ -24,5 +26,12 @@ public class PlayMatchCustomRepositoryImpl extends QuerydslRepositorySupport imp
         return queryFactory.selectFrom(playMatch)
                 .where(playMatch.player.id.eq(playerId))
                 .where(playMatch.matchDay.id.eq(matchId)).fetchFirst();
+    }
+
+    @Override
+    public List<PlayMatch> findByPlayerId(Long playerId) {
+        return queryFactory.selectFrom(playMatch)
+                .where(playMatch.player.id.eq(playerId))
+                .fetch();
     }
 }

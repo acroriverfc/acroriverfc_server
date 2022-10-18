@@ -9,7 +9,7 @@ public interface PlayMatchService {
 
     public PlayMatchDto findPlayMatchById(Long playMatchId);
 
-    public void updatePlayerStats(Long playerId, Long matchId, int goal, int assists);
+    public void updatePlayMatchStats(Long playerId, Long matchId, int goal, int assists);
 
     public PlayMatchDto findPlayMatchByTwoIds(Long playerId, Long matchId);
 }
