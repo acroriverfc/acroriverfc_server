@@ -1,0 +1,51 @@
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    container_name: db
+    restart: always
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    env_file:
+      - .env
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  web:
+    container_name: web
+    build:
+      context: ./
+      dockerfile: Dockerfile.prod
+    command: java -jar -Dspring.profiles.active=prod app.jar
+    env_file:
+      - .env
+    volumes:
+      - static:/home/app/web/static
+      - media:/home/app/web/media
+    expose:
+      - 8000
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  nginx:
+    container_name: nginx
+    build: ./config/nginx
+    volumes:
+      - static:/home/app/web/static
+      - media:/home/app/web/media
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+
+volumes:
+  dbdata:
+  static:
+  media:
