@@ -1,24 +1,19 @@
 # BUILDER IMAGE
-FROM eclipse-temurin:11-alpine as Builder
-COPY gradlew .
-COPY build.gradle .
-COPY settings.gradle .
-COPY .env .
+FROM gradle:7.4-jdk-alpine as Builder
+WORKDIR /build
 
-COPY gradle gradle
-COPY src src
+COPY build.gradle settings.gradle /build/
+COPY .env /build/
 
-RUN chmod +x ./gradlew
+RUN gradle build -x test --parallel --continue > /dev/null 2>&1 || true
 
-RUN ./gradlew build -x test --parallel --continue > /dev/null 2>&1 || true
-
-RUN ./gradlew clean
-RUN ./gradlew --stop
-RUN ./gradlew build -x test
+COPY . /build
+RUN gradle build -x test --parallel
 
 # BASE IMAGE
 FROM eclipse-temurin:11-alpine
-COPY --from=Builder build/libs/*.jar app.jar
+WORKDIR /build
+COPY --from=Builder /build/build/libs/*.jar app.jar
 
 EXPOSE 8080
 RUN chmod +x app.jar
