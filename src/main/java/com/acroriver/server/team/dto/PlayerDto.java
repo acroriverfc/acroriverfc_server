@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayerDto {
+    private Long playerId;
     private String playerName;
     private LocalDate birthDate;
     private int height;

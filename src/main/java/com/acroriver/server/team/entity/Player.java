@@ -16,6 +16,7 @@ import java.util.List;
 @Entity
 @DynamicInsert
 @NoArgsConstructor
+@Table(indexes = @Index(name = "back_num_idx", columnList = "backNum"))
 public class Player {
 
     @Id
@@ -83,6 +84,8 @@ public class Player {
     }
 
     public void changeBirthDate(LocalDate birthDate) {
+        if (birthDate == null)
+            return;
         this.birthDate = birthDate;
     }
 
@@ -91,10 +94,14 @@ public class Player {
     }
 
     public void changeHeight(int height) {
+        if (height == 0)
+            return;
         this.height = height;
     }
 
     public void changeWeight(int weight) {
+        if (weight == 0)
+            return;
         this.weight = weight;
     }
 
@@ -119,16 +126,17 @@ public class Player {
         this.description = description;
     }
 
-    // == 연관관계 메서드 == //
-    public void addPlayMatch(PlayMatch playMatch) {
-        playMatches.add(playMatch);
-        playMatch.setPlayer(this);
-    }
-
     // 출전한 경기 수 증가. 골이랑 어시 수 넘겨서 증가 시키기
     public void updateStats(int appearances, int goals, int assists) {
         this.appearances = appearances;
         this.goals = goals;
         this.assists = assists;
     }
+
+    // == 연관관계 메서드 == //
+    public void addPlayMatch(PlayMatch playMatch) {
+        playMatches.add(playMatch);
+        playMatch.setPlayer(this);
+    }
+
 }

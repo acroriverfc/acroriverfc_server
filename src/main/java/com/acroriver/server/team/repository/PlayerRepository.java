@@ -11,7 +11,5 @@ public interface PlayerRepository extends JpaRepository<Player, Long>, PlayerCus
 
     public Player findByBackNum(int backNum);
 
-    public List<Player> findByPosition(Position position);
-
-    public List<Player> findAll();
+    public List<Player> findByPositionOrderByBackNum(Position position);
 }

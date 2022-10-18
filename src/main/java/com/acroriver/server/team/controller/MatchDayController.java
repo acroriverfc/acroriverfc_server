@@ -34,10 +34,17 @@ public class MatchDayController {
         return new ResponseEntity<>(matchDayList, HttpStatus.ACCEPTED);
     }
 
-    // 경기 상태 기준 경기 조회y
+    // 경기 상태 기준 경기 조회
     @GetMapping("/matchDay/{state}")
     public ResponseEntity<List<MatchDayDto>> findMatchDayByState(@PathVariable String state) {
         List<MatchDayDto> matchDayList = matchDayService.findByState(state);
         return new ResponseEntity<>(matchDayList, HttpStatus.ACCEPTED);
+    }
+
+    // 현재 날짜 기준으로 가장 가까운 경기 조회
+    @GetMapping("/matchDay/next")
+    public ResponseEntity<MatchDayDto> findNextMatch() {
+        MatchDayDto nextMatch = matchDayService.findNextMatch();
+        return new ResponseEntity<>(nextMatch, HttpStatus.ACCEPTED);
     }
 }

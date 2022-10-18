@@ -2,11 +2,9 @@ package com.acroriver.server.team.service;
 
 import com.acroriver.server.team.dto.PlayerDto;
 import com.acroriver.server.team.entity.enums.Position;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface PlayerService {
 
     public void createPlayer(PlayerDto player);
@@ -19,7 +17,7 @@ public interface PlayerService {
 
     public PlayerDto findPlayerDtoByBackNum(int backNum);
 
-    public void changeBackNum(int backNum);
+    public void updatePlayerInfo(PlayerDto playerDto);
 
-
+    public List<List<PlayerDto>> findFivePlayers();
 }
