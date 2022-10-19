@@ -3,6 +3,7 @@ package com.acroriver.server.team.repository;
 import com.acroriver.server.team.entity.MatchDay;
 import com.acroriver.server.team.entity.enums.MatchState;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static com.acroriver.server.team.entity.QMatchDay.matchDay;
 
+@Slf4j
 public class MatchDayCustomRepositoryImpl extends QuerydslRepositorySupport implements MatchDayCustomRepository {
 
     private final JPAQueryFactory queryFactory;

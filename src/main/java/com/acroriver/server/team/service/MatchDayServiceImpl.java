@@ -21,7 +21,7 @@ public class MatchDayServiceImpl implements MatchDayService {
 
     @Transactional
     @Override
-    public void createMatchDay(MatchDayDto matchDayDto) {
+    public MatchDayDto createMatchDay(MatchDayDto matchDayDto) {
         MatchDay matchDay = MatchDay.builder()
                 .matchDate(matchDayDto.getMatchDate())
                 .awayName(matchDayDto.getAwayName())
@@ -31,7 +31,8 @@ public class MatchDayServiceImpl implements MatchDayService {
                 .awayGoals(matchDayDto.getAwayGoals())
                 .build();
 
-        matchDayRepository.save(matchDay);
+        MatchDay newMatchDay = matchDayRepository.save(matchDay);
+        return modelMapper.map(newMatchDay, MatchDayDto.class);
     }
 
     @Transactional(readOnly = true)
@@ -71,7 +72,7 @@ public class MatchDayServiceImpl implements MatchDayService {
 
     @Transactional
     @Override
-    public void updateMatchInfo(MatchDayDto matchDayDto) {
+    public MatchDayDto updateMatchInfo(MatchDayDto matchDayDto) {
         MatchDay matchDay = matchDayRepository.findById(matchDayDto.getMatchId()).get();
         matchDay.changeMatchDate(matchDayDto.getMatchDate());
         matchDay.changeMatchAwayName(matchDayDto.getAwayName());
@@ -79,12 +80,15 @@ public class MatchDayServiceImpl implements MatchDayService {
         matchDay.changeStadium(matchDayDto.getStadium());
         matchDay.changeAwayGoals(matchDayDto.getAwayGoals());
         matchDay.changeGoals(matchDayDto.getGoals());
-        matchDayRepository.save(matchDay);
+        MatchDay save = matchDayRepository.save(matchDay);
+        return modelMapper.map(save, MatchDayDto.class);
     }
 
     @Override
     public MatchDayDto findNextMatch() {
         MatchDay nextMatch = matchDayRepository.findNextMatch();
+        if (nextMatch == null)
+            return null;
         return modelMapper.map(nextMatch, MatchDayDto.class);
     }
 

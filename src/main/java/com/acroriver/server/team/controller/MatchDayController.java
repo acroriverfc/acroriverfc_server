@@ -23,8 +23,8 @@ public class MatchDayController {
     // 경기 생성
     @PostMapping("/matchDay")
     public ResponseEntity<MatchDayDto> createMatch(@RequestBody MatchDayDto matchDayDto) {
-        matchDayService.createMatchDay(matchDayDto);
-        return new ResponseEntity<>(matchDayDto, HttpStatus.CREATED);
+        MatchDayDto newMatchDayDto = matchDayService.createMatchDay(matchDayDto);
+        return new ResponseEntity<>(newMatchDayDto, HttpStatus.CREATED);
     }
 
     // 날짜 기준 경기 조회
@@ -46,5 +46,12 @@ public class MatchDayController {
     public ResponseEntity<MatchDayDto> findNextMatch() {
         MatchDayDto nextMatch = matchDayService.findNextMatch();
         return new ResponseEntity<>(nextMatch, HttpStatus.ACCEPTED);
+    }
+
+    // 경기 정보 업데이트
+    @PutMapping("/matchDay")
+    public ResponseEntity<MatchDayDto> updateMatch(@RequestBody MatchDayDto matchDayDto) {
+        MatchDayDto updateMatchInfo = matchDayService.updateMatchInfo(matchDayDto);
+        return new ResponseEntity<>(updateMatchInfo, HttpStatus.CREATED);
     }
 }

@@ -13,8 +13,8 @@ public class PlayMatchController {
 
     private final PlayMatchService playMatchService;
 
-    @PostMapping("/playMatch/{playerId}")
-    public ResponseEntity<String> addPlayMatch(@PathVariable Long playerId, @RequestParam("matchId") Long matchId) {
+    @PostMapping("/playMatch")
+    public ResponseEntity<String> addPlayMatch(@RequestParam("playerId") Long playerId, @RequestParam("matchId") Long matchId) {
         playMatchService.addPlayerToMatch(playerId, matchId);
         return new ResponseEntity<>("성공적으로 추가 되었습니다.", HttpStatus.CREATED);
     }
@@ -27,9 +27,9 @@ public class PlayMatchController {
         return new ResponseEntity<>(playMatchService.findPlayMatchByTwoIds(pid, mid), HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/playMatch")
+    @PutMapping("/playMatch")
     public ResponseEntity<PlayMatchDto> updatePlayMatch(@RequestBody PlayMatchDto playMatchDto) {
-        playMatchService.updatePlayMatchStats(playMatchDto.getPlayerId(), playMatchDto.getMatchId(), playMatchDto.getGoals(), playMatchDto.getAssists());
-        return new ResponseEntity<>(playMatchDto, HttpStatus.CREATED);
+        PlayMatchDto updatePlayMatch = playMatchService.updatePlayMatchStats(playMatchDto.getPlayerId(), playMatchDto.getMatchId(), playMatchDto.getGoals(), playMatchDto.getAssists());
+        return new ResponseEntity<>(updatePlayMatch, HttpStatus.CREATED);
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 public interface MatchDayService {
 
     // 경기 생성
-    public void createMatchDay(MatchDayDto matchDayDto);
+    public MatchDayDto createMatchDay(MatchDayDto matchDayDto);
 
     public List<MatchDayDto> findAll();
 
@@ -18,7 +18,7 @@ public interface MatchDayService {
     // 월 별 경기 일정
     public List<MatchDayDto> findByDate(int year, int month);
 
-    public void updateMatchInfo(MatchDayDto matchDayDto);
+    public MatchDayDto updateMatchInfo(MatchDayDto matchDayDto);
 
     // 다음 경기 (메인 화면에 표시될 것)
     public MatchDayDto findNextMatch();

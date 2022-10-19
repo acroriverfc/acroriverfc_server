@@ -39,17 +39,18 @@ public class PlayerController {
     // 플레이어 생성
     @PostMapping("/player")
     public ResponseEntity<PlayerDto> createPlayer(@RequestBody PlayerDto playerDto) {
-        playerService.createPlayer(playerDto);
-        return new ResponseEntity<>(playerDto, HttpStatus.CREATED);
+        PlayerDto newPlayer = playerService.createPlayer(playerDto);
+        return new ResponseEntity<>(newPlayer, HttpStatus.CREATED);
     }
 
     // 플레이어 정보 업데이트
-    @PostMapping("/player/info")
+    @PutMapping("/player")
     public ResponseEntity<PlayerDto> updatePlayerInfo(@RequestBody PlayerDto playerDto) {
-        playerService.updatePlayerInfo(playerDto);
-        return new ResponseEntity<>(playerDto, HttpStatus.ACCEPTED);
+        PlayerDto updatePlayer = playerService.updatePlayerInfo(playerDto);
+        return new ResponseEntity<>(updatePlayer, HttpStatus.ACCEPTED);
     }
 
+    // 득점왕, 도움왕, 출전왕 5명 받아오기
     @GetMapping("/player/rank")
     public ResponseEntity<List<List<PlayerDto>>> findPlayerRank() {
         List<List<PlayerDto>> fivePlayers = playerService.findFivePlayers();

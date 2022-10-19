@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PlayerService {
 
-    public void createPlayer(PlayerDto player);
+    public PlayerDto createPlayer(PlayerDto player);
 
     public PlayerDto findPlayerDtoById(Long id);
 
@@ -17,7 +17,7 @@ public interface PlayerService {
 
     public PlayerDto findPlayerDtoByBackNum(int backNum);
 
-    public void updatePlayerInfo(PlayerDto playerDto);
+    public PlayerDto updatePlayerInfo(PlayerDto playerDto);
 
     public List<List<PlayerDto>> findFivePlayers();
 }

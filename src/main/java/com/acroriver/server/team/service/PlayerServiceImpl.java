@@ -24,7 +24,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Transactional
     @Override
-    public void createPlayer(PlayerDto player) {
+    public PlayerDto createPlayer(PlayerDto player) {
         Player newPlayer = Player.builder()
                 .playerName(player.getPlayerName())
                 .birthDate(player.getBirthDate())
@@ -36,7 +36,8 @@ public class PlayerServiceImpl implements PlayerService {
                 .height(player.getHeight())
                 .build();
 
-        playerRepository.save(newPlayer);
+        Player savePlayer = playerRepository.save(newPlayer);
+        return modelMapper.map(savePlayer, PlayerDto.class);
     }
 
     @Transactional(readOnly = true)
@@ -73,7 +74,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Transactional
     @Override
-    public void updatePlayerInfo(PlayerDto playerDto) {
+    public PlayerDto updatePlayerInfo(PlayerDto playerDto) {
         Player player = playerRepository.findByBackNum(playerDto.getBackNum());
         player.changeImageUrl(playerDto.getImageUrl());
         player.changePlayerName(playerDto.getPlayerName());
@@ -84,6 +85,8 @@ public class PlayerServiceImpl implements PlayerService {
         player.changePosition(playerDto.getPosition());
         player.changeBackNum(playerDto.getBackNum());
         playerRepository.save(player);
+
+        return modelMapper.map(player, PlayerDto.class);
     }
 
     @Override

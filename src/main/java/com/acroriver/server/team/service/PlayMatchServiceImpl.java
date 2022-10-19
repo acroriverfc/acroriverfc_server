@@ -49,11 +49,11 @@ public class PlayMatchServiceImpl implements PlayMatchService {
 
     @Transactional
     @Override
-    public void updatePlayMatchStats(Long playerId, Long matchId, int goal, int assists) {
+    public PlayMatchDto updatePlayMatchStats(Long playerId, Long matchId, int goal, int assists) {
         PlayMatch playMatch = playMatchRepository.findByTwoIds(playerId, matchId);
         playMatch.updateAssists(assists);
         playMatch.updateGoals(goal);
-        playMatchRepository.save(playMatch);
+        PlayMatch save = playMatchRepository.save(playMatch);
 
         int totalGoals = 0;
         int totalAssists = 0;
@@ -66,6 +66,7 @@ public class PlayMatchServiceImpl implements PlayMatchService {
         player.updateStats(playMatchList.size(), totalGoals, totalAssists);
         playerRepository.save(player);
 
+        return modelMapper.map(save, PlayMatchDto.class);
     }
 
     @Transactional(readOnly = true)
