@@ -84,6 +84,7 @@ public class MatchDayServiceImpl implements MatchDayService {
         return modelMapper.map(save, MatchDayDto.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MatchDayDto findNextMatch() {
         MatchDay nextMatch = matchDayRepository.findNextMatch();

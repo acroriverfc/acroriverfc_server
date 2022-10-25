@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
@@ -47,6 +48,15 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleNullPointerException(NullPointerException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .code("Null Pointer Exception")
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e) {
+        final ErrorResponse errorResponse = ErrorResponse.builder()
+                .code("No Such Element Exception")
                 .message(e.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);

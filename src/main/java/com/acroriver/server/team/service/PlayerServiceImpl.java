@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,7 +76,8 @@ public class PlayerServiceImpl implements PlayerService {
     @Transactional
     @Override
     public PlayerDto updatePlayerInfo(PlayerDto playerDto) {
-        Player player = playerRepository.findByBackNum(playerDto.getBackNum());
+        Player player = playerRepository.findById(playerDto.getPlayerId())
+                .orElseThrow(() -> new EntityNotFoundException());
         player.changeImageUrl(playerDto.getImageUrl());
         player.changePlayerName(playerDto.getPlayerName());
         player.changeBirthDate(playerDto.getBirthDate());
@@ -89,6 +91,7 @@ public class PlayerServiceImpl implements PlayerService {
         return modelMapper.map(player, PlayerDto.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<List<PlayerDto>> findFivePlayers() {
         List<List<PlayerDto>> ret = new ArrayList<>();

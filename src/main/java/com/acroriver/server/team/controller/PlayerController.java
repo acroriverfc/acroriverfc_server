@@ -47,13 +47,13 @@ public class PlayerController {
     @PutMapping("/player")
     public ResponseEntity<PlayerDto> updatePlayerInfo(@RequestBody PlayerDto playerDto) {
         PlayerDto updatePlayer = playerService.updatePlayerInfo(playerDto);
-        return new ResponseEntity<>(updatePlayer, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(updatePlayer, HttpStatus.OK);
     }
 
     // 득점왕, 도움왕, 출전왕 5명 받아오기
     @GetMapping("/player/rank")
     public ResponseEntity<List<List<PlayerDto>>> findPlayerRank() {
         List<List<PlayerDto>> fivePlayers = playerService.findFivePlayers();
-        return new ResponseEntity<>(fivePlayers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(fivePlayers, HttpStatus.OK);
     }
 }
