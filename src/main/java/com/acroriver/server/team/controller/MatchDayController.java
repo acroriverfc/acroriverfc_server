@@ -1,6 +1,7 @@
 package com.acroriver.server.team.controller;
 
-import com.acroriver.server.team.dto.MatchDayDto;
+import com.acroriver.server.team.dto.matchday.MatchDayDetailDto;
+import com.acroriver.server.team.dto.matchday.MatchDayDto;
 import com.acroriver.server.team.service.MatchDayServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,12 @@ public class MatchDayController {
     public ResponseEntity<MatchDayDto> findNextMatch() {
         MatchDayDto nextMatch = matchDayService.findNextMatch();
         return new ResponseEntity<>(nextMatch, HttpStatus.ACCEPTED);
+    }
+
+    // 경기 상세 정보
+    @GetMapping("/matchDay/{matchId}")
+    public ResponseEntity<MatchDayDetailDto> findMatchDetail(@PathVariable Long matchId) {
+        return null;
     }
 
     // 경기 정보 업데이트

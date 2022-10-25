@@ -46,6 +46,9 @@ public class MatchDay {
     @OneToMany(mappedBy = "matchDay")
     private List<PlayMatch> playMatches = new ArrayList<>();
 
+    @OneToMany(mappedBy = "matchDay")
+    private List<MatchStat> matchStats = new ArrayList<>();
+
     // 경기 생성
     @Builder
     public MatchDay(LocalDateTime matchDate, String awayName, MatchState state, String stadium, int goals, int awayGoals) {
@@ -79,6 +82,10 @@ public class MatchDay {
         this.goals = goals;
     }
 
+    public void updateGoals() {
+        this.goals += 1;
+    }
+
     public void changeAwayGoals(int awayGoals) {
         this.awayGoals = awayGoals;
     }
@@ -93,5 +100,10 @@ public class MatchDay {
     public void addPlayMatch(PlayMatch playMatch) {
         this.playMatches.add(playMatch);
         playMatch.setMatchDay(this);
+    }
+
+    public void addMatchStats(MatchStat matchStat) {
+        this.matchStats.add(matchStat);
+        matchStat.setMatchDay(this);
     }
 }

@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class MatchStats {
+public class MatchStat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,25 +17,25 @@ public class MatchStats {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "match_id")
-    @Column(nullable = false, name = "match_id")
+    @JoinColumn(name = "match_id", nullable = false)
     private MatchDay matchDay;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "player_id")
-    @Column(nullable = false, name = "goal_id")
+    @JoinColumn(referencedColumnName = "player_id", name = "goal_id", nullable = false)
     private Player goal_player;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "player_id")
-    @Column(name = "assist_id")
+    @JoinColumn(referencedColumnName = "player_id", name = "assist_id")
     private Player assist_player;
 
     @Builder
-    public MatchStats(MatchDay matchDay, Player goal_player, Player assist_player) {
+    public MatchStat(MatchDay matchDay, Player goal_player, Player assist_player) {
         this.matchDay = matchDay;
         this.goal_player = goal_player;
-        if (assist_player != null)
-            this.assist_player = assist_player;
+        this.assist_player = assist_player;
+    }
+
+    public void setMatchDay(MatchDay matchDay) {
+        this.matchDay = matchDay;
     }
 }

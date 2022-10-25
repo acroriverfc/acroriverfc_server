@@ -12,8 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class PlayMatchServiceImpl implements PlayMatchService {
@@ -45,28 +43,6 @@ public class PlayMatchServiceImpl implements PlayMatchService {
     public PlayMatchDto findPlayMatchById(Long playMatchId) {
         PlayMatch playMatch = playMatchRepository.findById(playMatchId).get();
         return modelMapper.map(playMatch, PlayMatchDto.class);
-    }
-
-    @Transactional
-    @Override
-    public PlayMatchDto updatePlayMatchStats(Long playerId, Long matchId, int goal, int assists) {
-        PlayMatch playMatch = playMatchRepository.findByTwoIds(playerId, matchId);
-        playMatch.updateAssists(assists);
-        playMatch.updateGoals(goal);
-        PlayMatch save = playMatchRepository.save(playMatch);
-
-        int totalGoals = 0;
-        int totalAssists = 0;
-        List<PlayMatch> playMatchList = playMatchRepository.findByPlayerId(playerId);
-        for (PlayMatch match : playMatchList) {
-            totalGoals += match.getGoals();
-            totalAssists += match.getAssists();
-        }
-        Player player = playerRepository.findById(playerId).get();
-        player.updateStats(playMatchList.size(), totalGoals, totalAssists);
-        playerRepository.save(player);
-
-        return modelMapper.map(save, PlayMatchDto.class);
     }
 
     @Transactional(readOnly = true)

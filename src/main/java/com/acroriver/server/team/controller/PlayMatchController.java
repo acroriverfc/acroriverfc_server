@@ -5,7 +5,10 @@ import com.acroriver.server.team.service.PlayMatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,11 +28,5 @@ public class PlayMatchController {
         Long pid = Long.parseLong(playerId);
         Long mid = Long.parseLong(matchId);
         return new ResponseEntity<>(playMatchService.findPlayMatchByTwoIds(pid, mid), HttpStatus.ACCEPTED);
-    }
-
-    @PutMapping("/playMatch")
-    public ResponseEntity<PlayMatchDto> updatePlayMatch(@RequestBody PlayMatchDto playMatchDto) {
-        PlayMatchDto updatePlayMatch = playMatchService.updatePlayMatchStats(playMatchDto.getPlayerId(), playMatchDto.getMatchId(), playMatchDto.getGoals(), playMatchDto.getAssists());
-        return new ResponseEntity<>(updatePlayMatch, HttpStatus.CREATED);
     }
 }

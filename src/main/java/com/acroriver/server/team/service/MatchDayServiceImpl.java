@@ -1,11 +1,12 @@
 package com.acroriver.server.team.service;
 
-import com.acroriver.server.team.dto.MatchDayDto;
+import com.acroriver.server.error.entity.MatchDayNotFoundException;
+import com.acroriver.server.team.dto.matchday.MatchDayDetailDto;
+import com.acroriver.server.team.dto.matchday.MatchDayDto;
 import com.acroriver.server.team.entity.MatchDay;
 import com.acroriver.server.team.entity.enums.MatchState;
 import com.acroriver.server.team.repository.MatchDayRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,18 @@ import java.util.stream.Collectors;
 public class MatchDayServiceImpl implements MatchDayService {
 
     private final MatchDayRepository matchDayRepository;
-    private final ModelMapper modelMapper;
+
+    public MatchDayDto buildMatchDayDto(MatchDay matchDay) {
+        return MatchDayDto.builder()
+                .matchId(matchDay.getId())
+                .matchDate(matchDay.getMatchDate())
+                .awayGoals(matchDay.getAwayGoals())
+                .awayName(matchDay.getAwayName())
+                .stadium(matchDay.getStadium())
+                .state(matchDay.getState())
+                .goals(matchDay.getGoals())
+                .build();
+    }
 
     @Transactional
     @Override
@@ -32,7 +44,7 @@ public class MatchDayServiceImpl implements MatchDayService {
                 .build();
 
         MatchDay newMatchDay = matchDayRepository.save(matchDay);
-        return modelMapper.map(newMatchDay, MatchDayDto.class);
+        return buildMatchDayDto(newMatchDay);
     }
 
     @Transactional(readOnly = true)
@@ -40,15 +52,15 @@ public class MatchDayServiceImpl implements MatchDayService {
     public List<MatchDayDto> findAll() {
         List<MatchDay> allMatchDay = matchDayRepository.findAll();
         return allMatchDay.stream()
-                .map(p -> modelMapper.map(p, MatchDayDto.class))
+                .map(this::buildMatchDayDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     @Override
     public MatchDayDto findOne(Long matchId) {
-        MatchDay matchDay = matchDayRepository.findById(matchId).get();
-        return modelMapper.map(matchDay, MatchDayDto.class);
+        MatchDay matchDay = matchDayRepository.findById(matchId).orElseThrow(MatchDayNotFoundException::new);
+        return buildMatchDayDto(matchDay);
     }
 
     @Transactional(readOnly = true)
@@ -57,7 +69,7 @@ public class MatchDayServiceImpl implements MatchDayService {
         MatchState matchState = MatchState.valueOf(state);
         List<MatchDay> matchDayList = matchDayRepository.findByState(matchState);
         return matchDayList.stream().
-                map(p -> modelMapper.map(p, MatchDayDto.class))
+                map(this::buildMatchDayDto)
                 .collect(Collectors.toList());
     }
 
@@ -66,14 +78,14 @@ public class MatchDayServiceImpl implements MatchDayService {
     public List<MatchDayDto> findByDate(int year, int month) {
         List<MatchDay> matchDayList = matchDayRepository.findByDate(year, month);
         return matchDayList.stream().
-                map(p -> modelMapper.map(p, MatchDayDto.class))
+                map(this::buildMatchDayDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional
     @Override
     public MatchDayDto updateMatchInfo(MatchDayDto matchDayDto) {
-        MatchDay matchDay = matchDayRepository.findById(matchDayDto.getMatchId()).get();
+        MatchDay matchDay = matchDayRepository.findById(matchDayDto.getMatchId()).orElseThrow(MatchDayNotFoundException::new);
         matchDay.changeMatchDate(matchDayDto.getMatchDate());
         matchDay.changeMatchAwayName(matchDayDto.getAwayName());
         matchDay.changeMatchState(matchDayDto.getState());
@@ -81,7 +93,7 @@ public class MatchDayServiceImpl implements MatchDayService {
         matchDay.changeAwayGoals(matchDayDto.getAwayGoals());
         matchDay.changeGoals(matchDayDto.getGoals());
         MatchDay save = matchDayRepository.save(matchDay);
-        return modelMapper.map(save, MatchDayDto.class);
+        return buildMatchDayDto(save);
     }
 
     @Transactional(readOnly = true)
@@ -90,7 +102,16 @@ public class MatchDayServiceImpl implements MatchDayService {
         MatchDay nextMatch = matchDayRepository.findNextMatch();
         if (nextMatch == null)
             return null;
-        return modelMapper.map(nextMatch, MatchDayDto.class);
+        return buildMatchDayDto(nextMatch);
+    }
+
+    @Transactional
+    @Override
+    public MatchDayDetailDto findMatchDetail(Long matchId) {
+        MatchDay matchDay = matchDayRepository.findById(matchId).orElseThrow(MatchDayNotFoundException::new);
+        return MatchDayDetailDto.builder()
+                .matchDay(matchDay)
+                .build();
     }
 
 }

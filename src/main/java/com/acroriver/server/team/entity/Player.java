@@ -133,6 +133,19 @@ public class Player {
         this.assists = assists;
     }
 
+    public void updateAppearances(int appearances) {
+        this.appearances = appearances;
+    }
+
+    public void updateGoals() {
+        this.goals += 1;
+    }
+
+    public void updateAssists() {
+        this.assists += 1;
+    }
+
+
     // == 연관관계 메서드 == //
     public void addPlayMatch(PlayMatch playMatch) {
         playMatches.add(playMatch);

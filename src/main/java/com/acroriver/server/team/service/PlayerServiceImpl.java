@@ -1,16 +1,15 @@
 package com.acroriver.server.team.service;
 
+import com.acroriver.server.error.entity.PlayerNotFoundException;
 import com.acroriver.server.team.dto.PlayerDto;
 import com.acroriver.server.team.entity.Player;
 import com.acroriver.server.team.entity.enums.Position;
 import com.acroriver.server.team.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +20,23 @@ import java.util.stream.Collectors;
 public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
-    private final ModelMapper modelMapper;
+
+    // ModelMapper 대신 이거
+    public PlayerDto buildPlayerDto(Player player) {
+        return PlayerDto.builder().playerId(player.getId())
+                .playerName(player.getPlayerName())
+                .backNum(player.getBackNum())
+                .appearances(player.getAppearances())
+                .birthDate(player.getBirthDate())
+                .goals(player.getGoals())
+                .assists(player.getAssists())
+                .description(player.getDescription())
+                .imageUrl(player.getImageUrl())
+                .height(player.getHeight())
+                .weight(player.getWeight())
+                .position(player.getPosition())
+                .build();
+    }
 
     @Transactional
     @Override
@@ -38,14 +53,15 @@ public class PlayerServiceImpl implements PlayerService {
                 .build();
 
         Player savePlayer = playerRepository.save(newPlayer);
-        return modelMapper.map(savePlayer, PlayerDto.class);
+
+        return buildPlayerDto(savePlayer);
     }
 
     @Transactional(readOnly = true)
     @Override
     public PlayerDto findPlayerDtoById(Long id) {
-        Player player = playerRepository.findById(id).get();
-        return modelMapper.map(player, PlayerDto.class);
+        Player player = playerRepository.findById(id).orElseThrow(PlayerNotFoundException::new);
+        return buildPlayerDto(player);
     }
 
     @Transactional(readOnly = true)
@@ -53,7 +69,7 @@ public class PlayerServiceImpl implements PlayerService {
     public List<PlayerDto> findAllPlayerDto() {
         List<Player> playerList = playerRepository.findAll();
         return playerList.stream()
-                .map(p -> modelMapper.map(p, PlayerDto.class))
+                .map(this::buildPlayerDto)
                 .collect(Collectors.toList());
     }
 
@@ -62,7 +78,7 @@ public class PlayerServiceImpl implements PlayerService {
     public List<PlayerDto> findPlayerDtoByPosition(Position position) {
         List<Player> playerList = playerRepository.findByPositionOrderByBackNum(position);
         return playerList.stream()
-                .map(p -> modelMapper.map(p, PlayerDto.class))
+                .map(this::buildPlayerDto)
                 .collect(Collectors.toList());
     }
 
@@ -70,14 +86,14 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDto findPlayerDtoByBackNum(int backNum) {
         Player player = playerRepository.findByBackNum(backNum);
-        return modelMapper.map(player, PlayerDto.class);
+        return buildPlayerDto(player);
     }
 
     @Transactional
     @Override
     public PlayerDto updatePlayerInfo(PlayerDto playerDto) {
         Player player = playerRepository.findById(playerDto.getPlayerId())
-                .orElseThrow(() -> new EntityNotFoundException());
+                .orElseThrow(PlayerNotFoundException::new);
         player.changeImageUrl(playerDto.getImageUrl());
         player.changePlayerName(playerDto.getPlayerName());
         player.changeBirthDate(playerDto.getBirthDate());
@@ -88,7 +104,7 @@ public class PlayerServiceImpl implements PlayerService {
         player.changeBackNum(playerDto.getBackNum());
         playerRepository.save(player);
 
-        return modelMapper.map(player, PlayerDto.class);
+        return buildPlayerDto(player);
     }
 
     @Transactional(readOnly = true)
@@ -98,8 +114,8 @@ public class PlayerServiceImpl implements PlayerService {
         List<List<Player>> rank = playerRepository.findRank();
         log.info(rank.toString());
         for (List<Player> playerList : rank) {
-            ret.add(playerList.stream().limit(5).map(
-                            p -> modelMapper.map(p, PlayerDto.class))
+            ret.add(playerList.stream().limit(5).
+                    map(this::buildPlayerDto)
                     .collect(Collectors.toList()));
         }
         return ret;

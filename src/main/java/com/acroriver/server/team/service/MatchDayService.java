@@ -1,6 +1,7 @@
 package com.acroriver.server.team.service;
 
-import com.acroriver.server.team.dto.MatchDayDto;
+import com.acroriver.server.team.dto.matchday.MatchDayDetailDto;
+import com.acroriver.server.team.dto.matchday.MatchDayDto;
 
 import java.util.List;
 
@@ -22,5 +23,7 @@ public interface MatchDayService {
 
     // 다음 경기 (메인 화면에 표시될 것)
     public MatchDayDto findNextMatch();
+
+    public MatchDayDetailDto findMatchDetail(Long matchId);
 
 }
