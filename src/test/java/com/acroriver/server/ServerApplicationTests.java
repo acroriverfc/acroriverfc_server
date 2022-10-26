@@ -71,7 +71,7 @@ class ServerApplicationTests {
         MatchDayDto saveMatch = matchDayService.createMatchDay(m);
 
         playMatchService.addPlayerToMatch(savePlayer.getPlayerId(), saveMatch.getMatchId());
-        matchStatService.createMatchStatWithoutAssist(savePlayer.getPlayerId(), saveMatch.getMatchId());
+        matchStatService.createMatchStat(savePlayer.getPlayerId(), null, saveMatch.getMatchId());
 
         MatchDayDetailDto matchDetail = matchDayService.findMatchDetail(saveMatch.getMatchId());
         for (MatchStatDto matchStatDto : matchDetail.getMatchStatDtoList()) {
@@ -122,7 +122,7 @@ class ServerApplicationTests {
         playMatchService.addPlayerToMatch(p2.getPlayerId(), saveMatch.getMatchId());
 
         System.out.println("ADD PLAYER TO MATCH");
-        matchStatService.createMatchStatWithoutAssist(p1.getPlayerId(), saveMatch.getMatchId());
+        matchStatService.createMatchStat(p1.getPlayerId(), null, saveMatch.getMatchId());
         matchStatService.createMatchStat(p2.getPlayerId(), p1.getPlayerId(), saveMatch.getMatchId());
 
         System.out.println("CREATE MATCH STAT");

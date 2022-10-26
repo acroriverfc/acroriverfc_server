@@ -1,5 +1,7 @@
 package com.acroriver.server.team.service;
 
+import com.acroriver.server.error.entity.MatchDayNotFoundException;
+import com.acroriver.server.error.entity.PlayerNotFoundException;
 import com.acroriver.server.team.dto.MatchStatDto;
 import com.acroriver.server.team.entity.MatchDay;
 import com.acroriver.server.team.entity.MatchStat;
@@ -11,9 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,16 +27,13 @@ public class MatchStatServiceImpl implements MatchStatService {
     @Transactional
     @Override
     public MatchStatDto createMatchStat(Long goalId, Long assistId, Long matchId) {
-        MatchDay matchDay = matchDayRepository.findById(matchId).orElseThrow(EntityNotFoundException::new);
-        Optional<Player> optionalPlayer = playerRepository.findById(assistId);
-
         // 만약 어시가 없다면
-        if (optionalPlayer.isEmpty())
+        if (assistId == null)
             return createMatchStatWithoutAssist(goalId, matchId);
 
-
-        Player goalPlayer = playerRepository.findById(goalId).orElseThrow(EntityNotFoundException::new);
-        Player assistPlayer = optionalPlayer.get();
+        MatchDay matchDay = matchDayRepository.findById(matchId).orElseThrow(MatchDayNotFoundException::new);
+        Player goalPlayer = playerRepository.findById(goalId).orElseThrow(PlayerNotFoundException::new);
+        Player assistPlayer = playerRepository.findById(assistId).orElseThrow(PlayerNotFoundException::new);
         MatchStat newMatchStat = MatchStat.builder()
                 .matchDay(matchDay)
                 .goal_player(goalPlayer)
@@ -61,8 +57,8 @@ public class MatchStatServiceImpl implements MatchStatService {
     @Transactional
     @Override
     public MatchStatDto createMatchStatWithoutAssist(Long goalId, Long matchId) {
-        MatchDay matchDay = matchDayRepository.findById(matchId).orElseThrow(EntityNotFoundException::new);
-        Player goalPlayer = playerRepository.findById(goalId).orElseThrow(EntityNotFoundException::new);
+        MatchDay matchDay = matchDayRepository.findById(matchId).orElseThrow(MatchDayNotFoundException::new);
+        Player goalPlayer = playerRepository.findById(goalId).orElseThrow(PlayerNotFoundException::new);
         MatchStat newMatchStat = MatchStat.builder()
                 .matchDay(matchDay)
                 .goal_player(goalPlayer)
