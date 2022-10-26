@@ -27,6 +27,6 @@ public class PlayMatchController {
         // QUERY DSL로 쿼리문 만들어서 사용해야 한다.
         Long pid = Long.parseLong(playerId);
         Long mid = Long.parseLong(matchId);
-        return new ResponseEntity<>(playMatchService.findPlayMatchByTwoIds(pid, mid), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(playMatchService.findPlayMatchByTwoIds(pid, mid), HttpStatus.OK);
     }
 }
