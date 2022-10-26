@@ -3,8 +3,6 @@ package com.acroriver.server.team.dto.matchday;
 import com.acroriver.server.team.dto.MatchStatDto;
 import com.acroriver.server.team.dto.PlayMatchDto;
 import com.acroriver.server.team.entity.MatchDay;
-import com.acroriver.server.team.entity.MatchStat;
-import com.acroriver.server.team.entity.PlayMatch;
 import com.acroriver.server.team.entity.enums.MatchState;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +20,6 @@ public class MatchDayDetailDto {
     private MatchState state;
     private int goals;
     private int awayGoals;
-
     private List<PlayMatchDto> playMatchDtoList = new ArrayList<>();
     private List<MatchStatDto> matchStatDtoList = new ArrayList<>();
 
@@ -35,31 +32,13 @@ public class MatchDayDetailDto {
         this.state = matchDay.getState();
         this.goals = matchDay.getGoals();
         this.awayGoals = matchDay.getAwayGoals();
+    }
 
-        for (PlayMatch playMatch : matchDay.getPlayMatches()) {
-            PlayMatchDto playMatchDto = PlayMatchDto.builder()
-                    .backNum(playMatch.getPlayer().getBackNum())
-                    .playerName(playMatch.getPlayer().getPlayerName())
-                    .build();
-            playMatchDtoList.add(playMatchDto);
-        }
+    public void setPlayMatchDtoList(List<PlayMatchDto> playMatchDtoList) {
+        this.playMatchDtoList = playMatchDtoList;
+    }
 
-        for (MatchStat matchStat : matchDay.getMatchStats()) {
-            MatchStatDto matchStatDto;
-            if (matchStat.getAssist_player() == null) {
-                matchStatDto = MatchStatDto.builder()
-                        .msId(matchStat.getId())
-                        .goalPlayerName(matchStat.getGoal_player().getPlayerName())
-                        .build();
-            } else {
-                matchStatDto = MatchStatDto.builder()
-                        .msId(matchStat.getId())
-                        .goalPlayerName(matchStat.getGoal_player().getPlayerName())
-                        .assistPlayerName(matchStat.getAssist_player().getPlayerName())
-                        .build();
-            }
-            matchStatDtoList.add(matchStatDto);
-        }
-
+    public void setMatchStatDtoList(List<MatchStatDto> matchStatDtoList) {
+        this.matchStatDtoList = matchStatDtoList;
     }
 }

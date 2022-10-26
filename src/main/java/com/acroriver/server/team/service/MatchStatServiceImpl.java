@@ -30,8 +30,11 @@ public class MatchStatServiceImpl implements MatchStatService {
     public MatchStatDto createMatchStat(Long goalId, Long assistId, Long matchId) {
         MatchDay matchDay = matchDayRepository.findById(matchId).orElseThrow(EntityNotFoundException::new);
         Optional<Player> optionalPlayer = playerRepository.findById(assistId);
+
+        // 만약 어시가 없다면
         if (optionalPlayer.isEmpty())
-            createMatchStatWithoutAssist(goalId, matchId);
+            return createMatchStatWithoutAssist(goalId, matchId);
+
 
         Player goalPlayer = playerRepository.findById(goalId).orElseThrow(EntityNotFoundException::new);
         Player assistPlayer = optionalPlayer.get();

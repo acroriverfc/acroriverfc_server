@@ -30,19 +30,20 @@ public class PlayMatchServiceImpl implements PlayMatchService {
                 .player(player)
                 .matchDay(matchDay)
                 .build();
+        PlayMatch save = playMatchRepository.save(playMatch);
 
-        matchDay.addPlayMatch(playMatch);
-        player.addPlayMatch(playMatch);
+        matchDay.addPlayMatch(save);
+        player.addPlayMatch(save);
         matchDayRepository.save(matchDay);
         playerRepository.save(player);
-        playMatchRepository.save(playMatch);
     }
 
     @Transactional(readOnly = true)
     @Override
     public PlayMatchDto findPlayMatchById(Long playMatchId) {
         PlayMatch playMatch = playMatchRepository.findById(playMatchId).get();
-        return modelMapper.map(playMatch, PlayMatchDto.class);
+        PlayMatchDto map = modelMapper.map(playMatch, PlayMatchDto.class);
+        return map;
     }
 
     @Transactional(readOnly = true)

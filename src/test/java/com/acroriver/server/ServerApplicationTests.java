@@ -14,13 +14,12 @@ import com.acroriver.server.team.service.MatchDayService;
 import com.acroriver.server.team.service.MatchStatService;
 import com.acroriver.server.team.service.PlayMatchService;
 import com.acroriver.server.team.service.PlayerService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 class ServerApplicationTests {
     @Autowired
     PlayerRepository playerRepository;
@@ -53,7 +53,7 @@ class ServerApplicationTests {
                 .height(178)
                 .weight(69)
                 .imageUrl("")
-                .backNum(38)
+                .backNum(40)
                 .playerName("김길동")
                 .birthDate(LocalDate.now())
                 .description("테스트용 선수")
@@ -72,6 +72,7 @@ class ServerApplicationTests {
 
         playMatchService.addPlayerToMatch(savePlayer.getPlayerId(), saveMatch.getMatchId());
         matchStatService.createMatchStatWithoutAssist(savePlayer.getPlayerId(), saveMatch.getMatchId());
+
         MatchDayDetailDto matchDetail = matchDayService.findMatchDetail(saveMatch.getMatchId());
         for (MatchStatDto matchStatDto : matchDetail.getMatchStatDtoList()) {
             System.out.println("matchStatDto = " + matchStatDto.getGoalPlayerName());
@@ -81,29 +82,13 @@ class ServerApplicationTests {
         assertThat(player.getGoals()).isEqualTo(1);
     }
 
-    @BeforeEach
-    public void setUp() {
-        matchStatRepository.deleteAll();
-        playMatchRepository.deleteAll();
-        matchDayRepository.deleteAll();
-        playerRepository.deleteAll();
-    }
-
-    @AfterEach
-    public void After() {
-        matchStatRepository.deleteAll();
-        playMatchRepository.deleteAll();
-        matchDayRepository.deleteAll();
-        playerRepository.deleteAll();
-    }
-
     @Test
     public void Test2() {
         PlayerDto p = PlayerDto.builder()
                 .height(178)
                 .weight(69)
                 .imageUrl("")
-                .backNum(62)
+                .backNum(1)
                 .playerName("김길동")
                 .birthDate(LocalDate.now())
                 .description("테스트용 선수")
@@ -114,7 +99,7 @@ class ServerApplicationTests {
                 .height(192)
                 .weight(90)
                 .imageUrl("")
-                .backNum(7)
+                .backNum(2)
                 .playerName("홀란드")
                 .birthDate(LocalDate.now())
                 .description("테스트 2")
@@ -131,13 +116,19 @@ class ServerApplicationTests {
         PlayerDto p1 = playerService.createPlayer(p);
         PlayerDto p2 = playerService.createPlayer(pp);
         MatchDayDto saveMatch = matchDayService.createMatchDay(m);
+
+        System.out.println("CREATE 완료");
         playMatchService.addPlayerToMatch(p1.getPlayerId(), saveMatch.getMatchId());
         playMatchService.addPlayerToMatch(p2.getPlayerId(), saveMatch.getMatchId());
 
+        System.out.println("ADD PLAYER TO MATCH");
         matchStatService.createMatchStatWithoutAssist(p1.getPlayerId(), saveMatch.getMatchId());
         matchStatService.createMatchStat(p2.getPlayerId(), p1.getPlayerId(), saveMatch.getMatchId());
+
+        System.out.println("CREATE MATCH STAT");
         MatchDayDetailDto matchDetail = matchDayService.findMatchDetail(saveMatch.getMatchId());
 
+        System.out.println("FIND MATCH DETAIL");
         for (MatchStatDto matchStatDto : matchDetail.getMatchStatDtoList()) {
             System.out.println("matchStatDto.getGoalPlayerName() = " + matchStatDto.getGoalPlayerName());
             System.out.println("matchStatDto.getAssistPlayerName() = " + matchStatDto.getAssistPlayerName());

@@ -1,15 +1,20 @@
 package com.acroriver.server.team.service;
 
 import com.acroriver.server.error.entity.MatchDayNotFoundException;
+import com.acroriver.server.team.dto.MatchStatDto;
+import com.acroriver.server.team.dto.PlayMatchDto;
 import com.acroriver.server.team.dto.matchday.MatchDayDetailDto;
 import com.acroriver.server.team.dto.matchday.MatchDayDto;
 import com.acroriver.server.team.entity.MatchDay;
+import com.acroriver.server.team.entity.MatchStat;
+import com.acroriver.server.team.entity.PlayMatch;
 import com.acroriver.server.team.entity.enums.MatchState;
 import com.acroriver.server.team.repository.MatchDayRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +47,6 @@ public class MatchDayServiceImpl implements MatchDayService {
                 .goals(matchDayDto.getGoals())
                 .awayGoals(matchDayDto.getAwayGoals())
                 .build();
-
         MatchDay newMatchDay = matchDayRepository.save(matchDay);
         return buildMatchDayDto(newMatchDay);
     }
@@ -109,9 +113,40 @@ public class MatchDayServiceImpl implements MatchDayService {
     @Override
     public MatchDayDetailDto findMatchDetail(Long matchId) {
         MatchDay matchDay = matchDayRepository.findById(matchId).orElseThrow(MatchDayNotFoundException::new);
-        return MatchDayDetailDto.builder()
-                .matchDay(matchDay)
-                .build();
+        List<PlayMatchDto> playMatchDtoList = new ArrayList<>();
+        List<MatchStatDto> matchStatDtoList = new ArrayList<>();
+
+        List<PlayMatch> playMatches = matchDay.getPlayMatches();
+
+        for (PlayMatch playMatch : playMatches) {
+            PlayMatchDto playMatchDto = PlayMatchDto.builder()
+                    .backNum(playMatch.getPlayer().getBackNum())
+                    .playerName(playMatch.getPlayer().getPlayerName())
+                    .build();
+            playMatchDtoList.add(playMatchDto);
+        }
+
+        List<MatchStat> matchStats = matchDay.getMatchStats();
+        for (MatchStat matchStat : matchStats) {
+            MatchStatDto matchStatDto;
+            if (matchStat.getAssist_player() == null) {
+                matchStatDto = MatchStatDto.builder()
+                        .msId(matchStat.getId())
+                        .goalPlayerName(matchStat.getGoal_player().getPlayerName())
+                        .build();
+            } else {
+                matchStatDto = MatchStatDto.builder()
+                        .msId(matchStat.getId())
+                        .goalPlayerName(matchStat.getGoal_player().getPlayerName())
+                        .assistPlayerName(matchStat.getAssist_player().getPlayerName())
+                        .build();
+            }
+            matchStatDtoList.add(matchStatDto);
+        }
+        MatchDayDetailDto build = MatchDayDetailDto.builder().matchDay(matchDay).build();
+        build.setMatchStatDtoList(matchStatDtoList);
+        build.setPlayMatchDtoList(playMatchDtoList);
+        return build;
     }
 
 }

@@ -2,7 +2,7 @@ package com.acroriver.server.team.controller;
 
 import com.acroriver.server.team.dto.PlayerDto;
 import com.acroriver.server.team.entity.enums.Position;
-import com.acroriver.server.team.service.PlayerServiceImpl;
+import com.acroriver.server.team.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class PlayerController {
-    private final PlayerServiceImpl playerService;
+    private final PlayerService playerService;
 
     // 모든 플레이어 조회
     @GetMapping("/player/all")
