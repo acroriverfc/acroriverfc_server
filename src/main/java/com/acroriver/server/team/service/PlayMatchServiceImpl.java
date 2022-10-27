@@ -1,5 +1,7 @@
 package com.acroriver.server.team.service;
 
+import com.acroriver.server.error.entity.MatchDayNotFoundException;
+import com.acroriver.server.error.entity.PlayerNotFoundException;
 import com.acroriver.server.team.dto.PlayMatchDto;
 import com.acroriver.server.team.entity.MatchDay;
 import com.acroriver.server.team.entity.PlayMatch;
@@ -24,8 +26,8 @@ public class PlayMatchServiceImpl implements PlayMatchService {
     @Transactional
     @Override
     public void addPlayerToMatch(Long playerId, Long matchId) {
-        Player player = playerRepository.findById(playerId).get();
-        MatchDay matchDay = matchDayRepository.findById(matchId).get();
+        Player player = playerRepository.findById(playerId).orElseThrow(PlayerNotFoundException::new);
+        MatchDay matchDay = matchDayRepository.findById(matchId).orElseThrow(MatchDayNotFoundException::new);
         PlayMatch playMatch = PlayMatch.builder()
                 .player(player)
                 .matchDay(matchDay)
@@ -34,6 +36,7 @@ public class PlayMatchServiceImpl implements PlayMatchService {
 
         matchDay.addPlayMatch(save);
         player.addPlayMatch(save);
+        player.updateAppearances();
         matchDayRepository.save(matchDay);
         playerRepository.save(player);
     }

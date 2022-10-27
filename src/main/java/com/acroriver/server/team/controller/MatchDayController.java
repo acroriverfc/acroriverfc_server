@@ -40,7 +40,7 @@ public class MatchDayController {
     }
 
     // 경기 상태 기준 경기 조회
-    @GetMapping("/matchDay/{state}")
+    @GetMapping("/matchDay/state/{state}")
     public ResponseEntity<List<MatchDayDto>> findMatchDayByState(@PathVariable String state) {
         List<MatchDayDto> matchDayList = matchDayService.findByState(state);
         return new ResponseEntity<>(matchDayList, HttpStatus.OK);
@@ -54,7 +54,7 @@ public class MatchDayController {
     }
 
     // 경기 상세 정보
-    @GetMapping("/matchDay/{matchId}")
+    @GetMapping("/matchDay/matchId/{matchId}")
     public ResponseEntity<MatchDayDetailDto> findMatchDetail(@PathVariable Long matchId) {
         MatchDayDetailDto matchDetail = matchDayService.findMatchDetail(matchId);
         return new ResponseEntity<>(matchDetail, HttpStatus.OK);
@@ -64,11 +64,11 @@ public class MatchDayController {
     @PutMapping("/matchDay")
     public ResponseEntity<MatchDayDto> updateMatch(@RequestBody MatchDayDto matchDayDto) {
         MatchDayDto updateMatchInfo = matchDayService.updateMatchInfo(matchDayDto);
-        return new ResponseEntity<>(updateMatchInfo, HttpStatus.CREATED);
+        return new ResponseEntity<>(updateMatchInfo, HttpStatus.OK);
     }
 
     // 골/어시 기록 업데이트
-    @PostMapping("/matchDay/{matchId}")
+    @PostMapping("/matchDay/matchId/{matchId}")
     public ResponseEntity<MatchStatDto> updateMatchStat(@PathVariable Long matchId, @RequestBody MatchStatRequestDto matchStatRequestDto) {
         MatchStatDto matchStat = matchStatService.createMatchStat(matchStatRequestDto.getGoalId(), matchStatRequestDto.getAssistId(), matchId);
         return new ResponseEntity<>(matchStat, HttpStatus.CREATED);

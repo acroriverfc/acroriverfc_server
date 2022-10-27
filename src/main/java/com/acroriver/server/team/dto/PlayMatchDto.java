@@ -3,8 +3,10 @@ package com.acroriver.server.team.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class PlayMatchDto {
     // 경기 입장에서만 선수를 조회하는 경우

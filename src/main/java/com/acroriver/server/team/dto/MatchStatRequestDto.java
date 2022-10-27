@@ -1,10 +1,10 @@
 package com.acroriver.server.team.dto;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Builder
+@Setter
 public class MatchStatRequestDto {
     private Long assistId;
     private Long goalId;

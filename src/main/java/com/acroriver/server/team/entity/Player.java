@@ -133,8 +133,8 @@ public class Player {
         this.assists = assists;
     }
 
-    public void updateAppearances(int appearances) {
-        this.appearances = appearances;
+    public void updateAppearances() {
+        this.appearances += 1;
     }
 
     public void updateGoals() {

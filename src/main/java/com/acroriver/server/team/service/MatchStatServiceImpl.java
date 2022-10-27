@@ -48,6 +48,7 @@ public class MatchStatServiceImpl implements MatchStatService {
         assistPlayer.updateAssists();
 
         return MatchStatDto.builder()
+                .msId(save.getId())
                 .goalPlayerName(goalPlayer.getPlayerName())
                 .assistPlayerName(assistPlayer.getPlayerName())
                 .build();
@@ -72,6 +73,7 @@ public class MatchStatServiceImpl implements MatchStatService {
 
         return MatchStatDto.builder()
                 .goalPlayerName(goalPlayer.getPlayerName())
+                .msId(save.getId())
                 .build();
     }
 }

@@ -26,9 +26,11 @@ public class MatchDay {
     @Column(unique = true, nullable = false)
     private LocalDateTime matchDate;
 
+    @Column(nullable = false)
     private String awayName;
 
     // 경기장 이름
+    @Column(nullable = false)
     private String stadium;
 
     @Enumerated(EnumType.STRING)

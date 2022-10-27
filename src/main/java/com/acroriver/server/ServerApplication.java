@@ -7,8 +7,11 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class ServerApplication {
 
-    public static void main(String[] args) {
+    static {
+        System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
+    }
 
+    public static void main(String[] args) {
         SpringApplication.run(ServerApplication.class, args);
     }
 
